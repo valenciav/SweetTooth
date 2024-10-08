@@ -1,7 +1,10 @@
 import mongoose, { Schema } from "mongoose";
 
 const tagSchema = new Schema({
-	name: String,
+	name: {
+		type: String,
+		unique: true
+	},
 	recipes: [{
 		type: Schema.Types.ObjectId,
 		ref: 'Recipe'

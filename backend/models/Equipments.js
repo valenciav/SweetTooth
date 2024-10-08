@@ -1,9 +1,10 @@
 import mongoose, { Schema } from "mongoose";
 
-const equipmenttSchema = new Schema({
+const equipmentSchema = new Schema({
 	name: {
 		type: String,
-		required: true
+		required: true,
+		unique: true
 	}
 })
 
