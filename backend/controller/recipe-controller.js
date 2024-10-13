@@ -23,7 +23,7 @@ export const getRecipes = async (req, res) => {
 		const recipes = await Recipe.find({});
 		res.status(200).json({ success: true, data: recipes });
 	} catch (error) {
-		console.log("Error in get recipe: ", error.message);
+		console.log("Error in get recipe:", error.message);
 		res.status(500).json({ success: false, message: "Server Error" });
 	}
 }

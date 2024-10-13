@@ -2,8 +2,9 @@ import mongoose from "mongoose";
 import User from "../models/Users.js";
 
 export const getUser = async (req, res) => {
+	const {username} = req.params;
 	try {
-		const users = await User.find({});
+		const users = await User.find({username:username});
 		res.status(200).json({ success: true, data: users });
 	} catch (error) {
 		console.log("Error in get user: ", error.message);
