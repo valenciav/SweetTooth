@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	:root {
+		--primary: #806060;
+		--secondary: #CA8787;
+		--background: #FFF5E4;
+	}
+}
+
+@font-face {
+	font-family: senRegular;
+	src: url(Sen-Regular.ttf);
+}
+
+body {
+	@apply bg-[var(--background)] text-[var(--primary)] font-[senRegular]
+}
+
+.invertPalette {
+	@apply bg-[var(--primary)] text-[var(--background)]
+}
+
+h1 { @apply font-bold text-4xl }
+h2 { @apply font-bold text-3xl }
+h3 { @apply font-bold text-2xl }
+h4 { @apply font-bold text-xl }
+h5 { @apply font-bold text-lg }
+
+.form {
+	@apply grid gap-12 bg-slate-50 p-20 border-2 border-[var(--primary)] rounded-3xl
+}
+
+.form-control {
+	@apply flex flex-col min-w-72
+}
+
+input[type='text'], input[type='password'] {
+	@apply bg-transparent border-b-2 border-[var(--primary)] ml-4 mt-2 outline-none
+}
+
+.btn {
+	@apply px-4 py-2 rounded-xl font-semibold bg-[var(--secondary)] text-[var(--background)]
+}

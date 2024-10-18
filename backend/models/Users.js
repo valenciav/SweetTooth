@@ -5,16 +5,16 @@ const userSchema = new Schema({
 	username: {
 		type: String,
 		required: true,
-		unique: true
+		unique: [true, "Username required"]
 	},
 	email: {
 		type: String,
 		required: true,
-		unique: true
+		unique: [true, "Email required"]
 	},
 	password: {
 		type: String,
-		required: true
+		required: [true, "Password required"]
 	},
 	profilePicture: Buffer,
 	bannerPicture: Buffer,

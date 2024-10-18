@@ -1,21 +1,47 @@
 import mongoose from "mongoose";
 import User from "../models/Users.js";
 
-export const getUser = async (req, res) => {
-	const {username} = req.params;
+export const getUserByUsername = async (req, res) => {
+	const { username } = req.params;
 	try {
-		const users = await User.find({username:username});
-		res.status(200).json({ success: true, data: users });
+		const user = await User.findOne({username});
+		res.status(200).json({ success: true, data: user });
 	} catch (error) {
-		console.log("Error in get user: ", error.message);
+		console.log("Error in get user by username: ", error.message);
 		res.status(500).json({ success: false, message: "Server Error" });
 	}
 }
 
+export const getUserByEmail = async (req, res) => {
+	const { email } = req.params;
+	try {
+		const user = await User.findOne({email});
+		res.status(200).json({ success: true, data: user });
+	} catch (error) {
+		console.log("Error in get user by email: ", error.message);
+		res.status(500).json({ success: false, message: "Server Error" });
+	}
+}
+
+export const getUserData = async (req, res) => {
+	const token = req.cookie;
+	console.log('token', token);
+	return res.status(200).json({ success: true, data: token });
+}
+
 export const createUser = async (req, res) => {
+	console.log(req.body)
 	const user = req.body;
-	if(!user.username || !user.email || !user.password) {
-		return res.status(400).json({ success: false, message: "Please fill all fields" });
+	if(!user.username || !user.email || !user.password || !user.confirmPassword) {
+		return res.status(400).json({ success: false, message: "Incomplete credentials" });
+	}
+	const checkEmail = await User.findOne({email: user.email}, {username: user.username});
+	if(checkEmail) {
+		return res.status(409).json({ success: false, message: "Email is already registered"});
+	}
+	const checkUsername = await User.findOne({username: user.username});
+	if(checkUsername) {
+		return res.status(409).json({ success: false, message: "Username is already taken"});
 	}
 	const newUser = new User(user);
 

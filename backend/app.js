@@ -8,6 +8,7 @@ import notificationRoutes from "./routes/notification.js";
 import recipeRoutes from "./routes/recipe.js";
 import reviewRoutes from "./routes/review.js";
 import tagRoutes from "./routes/tag.js";
+import authenticationRoutes from "./routes/authentication.js";
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use("/api/notifications", notificationRoutes);
 app.use("/api/recipes", recipeRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/tags", tagRoutes);
+app.use("/api/auth", authenticationRoutes);
 
 app.get('/', (req, res) => {
 	res.send("Home page");
