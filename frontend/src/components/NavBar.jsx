@@ -10,14 +10,23 @@ const NavBar = () => {
 	useEffect(() => {
 		fetchUserData();
 	}, [fetchUserData])
+
+	const toggleProfileMenu = () => {
+
+	}
+
+	const toggleNotification = () => {
+
+	}
+
 	return (
-		<nav className="h-16 bg-[var(--primary)] w-full py-3 flex justify-around items-center">
+		<nav className="h-16 bg-[var(--primary)] w-full py-3 px-5 flex justify-between items-center">
 			<img src="/SweetToothLogo.png" alt="Sweet Tooth Logo" className="h-full"/>
 			<SearchBar/>
 			{user ?
 				<div className='flex gap-3'>
-					<button className='text-[var(--background)]'><FaBell size={24}/></button>
-					<a href='/' className='bg-black rounded-full'><img src={'/SweetToothIcon_Resized.png'} alt='Profile Picture' className='h-10'/></a>
+					<button className='text-[var(--background)]' onClick={toggleNotification}><FaBell size={24}/></button>
+					<button className='bg-black rounded-full' onClick={toggleProfileMenu}><img src={'/SweetToothIcon_Resized.png'} alt='Profile Picture' className='h-10 rounded-full'/></button>
 				</div>
 				:
 				<button type="button" className="px-4 py-2 rounded-xl font-semibold bg-[var(--background)] text-[var(--secondary)]" onClick={()=>{navigate('/signIn')}}>Sign In</button>

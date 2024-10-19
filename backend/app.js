@@ -9,12 +9,23 @@ import recipeRoutes from "./routes/recipe.js";
 import reviewRoutes from "./routes/review.js";
 import tagRoutes from "./routes/tag.js";
 import authenticationRoutes from "./routes/authentication.js";
+import cookieParser from "cookie-parser";
+import cors from "cors";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+app.use(
+	cors({
+		origin: ["http://localhost:3000"],
+		methods: ["GET", "POST", "PUT", "DELETE"],
+		credentials: true
+	})
+);
+
+app.use(cookieParser());
 app.use(express.json());
 
 app.use("/api/users", userRoutes);

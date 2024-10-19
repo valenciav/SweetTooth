@@ -24,9 +24,8 @@ export const getUserByEmail = async (req, res) => {
 }
 
 export const getUserData = async (req, res) => {
-	const token = req.cookie;
-	console.log('token', token);
-	return res.status(200).json({ success: true, data: token });
+	const token = req.cookies?.token;
+	return res.status(200).json({ success: true, token: token });
 }
 
 export const createUser = async (req, res) => {

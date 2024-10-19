@@ -9,7 +9,8 @@ export const useUserStore = create((set) => ({
 			credentials: 'include'
 		});
 		const data = await res.json();
-		set({ user: data.data });
+		console.log(data)
+		set({ user: data.token });
 	},
 	login: (user) => set({ user, isAuthenticated: true }),
 	logout: () => set({ user: null, isAuthenticated: false })
