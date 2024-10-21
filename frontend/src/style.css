@@ -16,11 +16,11 @@
 }
 
 body {
-	@apply bg-[var(--background)] text-[var(--primary)] font-[senRegular]
+	@apply bg-background text-primary font-[senRegular]
 }
 
 .invertPalette {
-	@apply bg-[var(--primary)] text-[var(--background)]
+	@apply bg-primary text-background
 }
 
 h1 { @apply font-bold text-4xl }
@@ -30,17 +30,21 @@ h4 { @apply font-bold text-xl }
 h5 { @apply font-bold text-lg }
 
 .form {
-	@apply grid gap-12 bg-slate-50 p-20 border-2 border-[var(--primary)] rounded-3xl
+	@apply grid gap-12 p-20 border-2 bg-white bg-opacity-90 border-primary rounded-3xl
 }
 
 .form-control {
-	@apply flex flex-col min-w-72
+	@apply flex flex-col
 }
 
 input[type='text'], input[type='password'] {
-	@apply bg-transparent border-b-2 border-[var(--primary)] ml-4 mt-2 outline-none
+	@apply bg-transparent border-b-2 border-primary ml-4 mt-2 outline-none
+}
+
+small {
+	@apply text-xs text-secondary w-full text-right h-0.5
 }
 
 .btn {
-	@apply px-4 py-2 rounded-xl font-semibold bg-[var(--secondary)] text-[var(--background)]
+	@apply px-4 py-2 rounded-xl font-semibold bg-secondary text-background
 }

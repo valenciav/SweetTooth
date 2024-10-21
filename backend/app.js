@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(
 	cors({
-		origin: ["http://localhost:3000"],
+		origin: ["http://localhost:5173"],
 		methods: ["GET", "POST", "PUT", "DELETE"],
 		credentials: true
 	})
@@ -35,7 +35,7 @@ app.use("/api/notifications", notificationRoutes);
 app.use("/api/recipes", recipeRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/tags", tagRoutes);
-app.use("/api/auth", authenticationRoutes);
+app.use("/", authenticationRoutes);
 
 app.get('/', (req, res) => {
 	res.send("Home page");

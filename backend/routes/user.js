@@ -1,13 +1,15 @@
 import express from "express";
-import { createUser, getUserByUsername, editUser, deleteUser, getUserByEmail, getUserData } from "../controller/user-controller.js";
+import { createUser, editUser, deleteUser, getBookmarks, addBookmark, checkUsernameAvailability, checkEmailAvailability } from "../controller/user-controller.js";
+import { userVerification } from "../middleware/AuthMiddleware.js";
 
 const router = express.Router();
 
 router.post('/', createUser);
-router.get('/getByUsername/:username', getUserByUsername);
-router.get('/getByEmail/:email', getUserByEmail);
-router.get('/getUserData', getUserData)
-router.put('/:id', editUser);
+router.get('/checkUsername/:username', checkUsernameAvailability);
+router.get('/checkEmail/:email', checkEmailAvailability);
+router.get('/getBookmarks', userVerification, getBookmarks);
+router.post('/addBookmark', userVerification, addBookmark);
+router.put('/:id', userVerification, editUser);
 router.delete('/:id', deleteUser);
 
 export default router;

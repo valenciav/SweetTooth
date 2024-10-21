@@ -33,7 +33,7 @@ const HomePage = () => {
 					})
 				}
 			</div>
-			<button onClick={() => {navigate(user ? '/createRecipe' : '/signIn') }} className="rounded-full absolute right-8 bottom-8 p-3 bg-[var(--secondary)] text-[var(--background)] text-3xl"><IoAddOutline /></button>
+			<button onClick={() => {navigate(user ? '/createRecipe' : '/signIn') }} className="rounded-full absolute right-8 bottom-8 p-3 bg-secondary text-background text-3xl"><IoAddOutline /></button>
 		</div>
 	);
 };

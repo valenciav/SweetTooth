@@ -20,14 +20,16 @@ const SignInPage = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		if(!credentials.email || !credentials.password) return;
-		const signInRes = await fetch('/api/auth/signIn', {
+		const signInRes = await fetch('http://localhost:5000/signIn', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
+			credentials: 'include',
 			body: JSON.stringify(credentials)
 		})
 		const result = await signInRes.json();
+		console.log(result)
 		if(!result.success) {
 			console.log('Failed to log in');
 			return;
@@ -35,6 +37,10 @@ const SignInPage = () => {
 		login(credentials);
 		console.log('Successfully logged in');
 		navigate(-1);
+		setCredentials({
+			email: '',
+			password: ''
+		})
 	}
 
 	return (
@@ -42,11 +48,11 @@ const SignInPage = () => {
 			<form className='form'>
 				<div className='text-center'>
 					<h3>Glad to see you at SweetTooth!</h3>
-					<span className='text-xs'>Don&apos;t have an account yet? Create one <a href="/register" className='text-[var(--secondary)]'>here!</a></span>
+					<span className='text-xs'>Don&apos;t have an account yet? Create one <a href="/register" className='text-secondary'>here!</a></span>
 				</div>
 				<div className='flex flex-col gap-8'>
 					<div className='form-control'>
-						<label htmlFor='email'>Email/Username</label>
+						<label htmlFor='email'>Email</label>
 						<input type='text' name='email' onChange={handleChange}/>
 					</div>
 					<div className='form-control'>

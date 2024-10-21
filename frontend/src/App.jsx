@@ -6,6 +6,7 @@ import './style.css';
 import RegisterPage from './pages/RegisterPage';
 import SignInPage from './pages/SignInPage';
 import { FaChevronLeft } from "react-icons/fa";
+import BookmarkPage from './pages/BookmarkPage';
 
 function App() {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ function App() {
         <Route path="/createRecipe" element={ <CreateRecipePage/> }/>
         <Route path="/signIn" element={ <SignInPage/> }/>
         <Route path="/register" element={ <RegisterPage/> }/>
+        <Route path="/bookmark" element={ <BookmarkPage /> }/>
       </Routes>
     </div>
   )
