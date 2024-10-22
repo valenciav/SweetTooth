@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 import { useBookmarkStore } from '../store/bookmark';
 import { useNavigate } from 'react-router-dom';
 
-
 const RecipeCard = ({recipe}) => {
 	const navigate = useNavigate();
 	const { user, fetchUserData } = useUserStore();
@@ -17,16 +16,16 @@ const RecipeCard = ({recipe}) => {
 	}, [fetchUserData]);
 
 	useEffect(() => {
-		fetchBookmarks(user);
-	}, [fetchBookmarks, user, createBookmark])
+		fetchBookmarks();
+	}, [fetchBookmarks])
 
 	const addBookmark = () => {
-		if(!user) navigate('/signIn')
-		const bookmark = {
-			username: user,
-			recipeId: recipe._id
+		if(!user) {
+			navigate('/signIn');
+			return;
 		}
-		createBookmark(bookmark);
+		const recipeId = recipe._id
+		createBookmark(recipeId);
 	}
 
 	return (
@@ -35,7 +34,7 @@ const RecipeCard = ({recipe}) => {
 			<div className='invertPalette px-4 py-2 w-full'>
 				<div className='flex justify-between items-center'>
 					<h3>{recipe.name}</h3>
-					<button type='button' onClick={addBookmark} className='text-2xl'>{user && bookmarks?.find((bookmark) => bookmark == recipe._id) ? <IoBookmark /> : <IoBookmarkOutline /> }</button>
+					<button type='button' onClick={addBookmark} className='text-2xl'>{bookmarks?.find((bookmark) => bookmark._id == recipe._id) ? <IoBookmark /> : <IoBookmarkOutline /> }</button>
 				</div>
 				<div className='flex items-center'>
 					<CiStar /><CiStar /><CiStar /><CiStar /><CiStar />{recipe.reviews.length} reviews

@@ -23,6 +23,10 @@ export const useRecipeStore = create((set) => ({
 		const data = await res.json();
 		set({ recipes: data.data });
 	},
+	fetchRecipeById: async (id) => {
+		const res = await fetch(`/api/recipes/${id}`).then((response) => response.json());
+		return res.data;
+	},
 	editRecipe: async (id, updatedRecipe) => {
 		if(!updatedRecipe.name || !updatedRecipe.author || !updatedRecipe.prepMinute || !updatedRecipe.portion || !updatedRecipe.description || !updatedRecipe.ingredients || !updatedRecipe.equipments || !updatedRecipe.instructions) {
 			return { success: false, message: "Please fill in the required fields" };

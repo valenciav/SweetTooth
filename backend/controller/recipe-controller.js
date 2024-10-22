@@ -28,8 +28,19 @@ export const getRecipes = async (req, res) => {
 	}
 }
 
+export const getRecipeById = async (req, res) => {
+	const { id } = req.params;
+	try {
+		const recipe = await Recipe.findById(id);
+		res.status(200).json({ success: true, data: recipe });
+	} catch (error) {
+		console.log("Error in get recipe information:", error.message);
+		res.status(500).json({ success: false, message: "Server Error" });
+	}
+}
+
 export const editRecipe = async (req, res) => {
-	const {id} = req.params;
+	const { id } = req.params;
 	if (!mongoose.Types.ObjectId.isValid(id)) {
 		res.status(404).json({ success: false, message: "Recipe not found" });
 	}

@@ -16,7 +16,7 @@ export  const userVerification = (req, res, next) => {
 			throw new Error('Unauthorized');
 		}
 		else {
-			const user = await User.findById(data.id).select('-password');
+			const user = await User.findById(data.id).select('-email -password');
 			if(user) {
 				req.user = user;
 				next()

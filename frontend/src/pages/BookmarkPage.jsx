@@ -1,27 +1,19 @@
-import React, { useEffect } from 'react'
-import { useUserStore } from '../store/user'
+import React, { useEffect, useState } from 'react'
+import RecipeCard from "../components/RecipeCard";
 import { useBookmarkStore } from '../store/bookmark';
-import RecipeCard from '../components/RecipeCard';
-import { useRecipeStore } from '../store/recipe';
 
 const BookmarkPage = () => {
-	const { user, fetchUserData } = useUserStore();
-	const {bookmarks, fetchBookmarks} = useBookmarkStore();
-	const {recipes, fetchRecipes} = useRecipeStore();
-	useEffect(() => {
-		fetchUserData()
-	}, [fetchUserData, user]);
-	useEffect(() => {
-		fetchRecipes();
-	}, [fetchRecipes]);
+	const { bookmarks, fetchBookmarks } = useBookmarkStore();
 	useEffect(() => {
 		fetchBookmarks();
 	}, [fetchBookmarks]);
 
 	return (
-		<div className='flex flex-wrap'>
-			{recipes.map((recipe) => {
-				<RecipeCard key={recipe._id} recipe={recipe}/>
+		<div className='flex flex-wrap m-5'>
+			{bookmarks.map((bookmark) => {
+					return (
+						<RecipeCard key={bookmark._id} recipe={bookmark} />
+					)
 			})}
 		</div>
 	)

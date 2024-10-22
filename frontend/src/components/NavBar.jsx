@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from "react-router-dom"
-// import  { useCookies } from "react-cookie";
 import SearchBar from "./SearchBar"
 import { useUserStore } from '../store/user';
 import { FaBell } from 'react-icons/fa';
@@ -9,7 +8,6 @@ import { IoBookmark, IoLogOut } from 'react-icons/io5';
 
 const NavBar = () => {
 	const navigate = useNavigate();
-	// const [cookies, removeCookie] = useCookies([]);
 	const { fetchUserData, user, logout } = useUserStore();
 	useEffect(() => {
 		fetchUserData();
