@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
 const recipeSchema = new mongoose.Schema({
-	name: {
+	title: {
 		type: String,
 		required: true
 	},
@@ -20,24 +20,19 @@ const recipeSchema = new mongoose.Schema({
 		required: true
 	},
 	tags: [{
-		type: Schema.Types.ObjectId,
-		ref: 'Tag'
+		type: String
 	}],
 	description: {
 		type: String,
 		required: true
 	},
 	ingredients: [{
-		ingredient: {
-			type: Schema.Types.ObjectId,
-			ref: 'Ingredient'
-		},
+		ingredient: String,
 		quantity: Number,
 		unit: String
 	}],
 	equipments: [{
-		type: Schema.Types.ObjectId,
-		ref: 'Equipment'
+		type: String
 	}],
 	instructions: [{
 		type: String

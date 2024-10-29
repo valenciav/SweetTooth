@@ -3,7 +3,7 @@ import { create } from 'zustand';
 export const useNotificationStore = create((set) => ({
 	notifications: [],
 	setNotifications: (notifications) => set({ notifications }),
-	createNotifications: async (newNotification) => {
+	createNotification: async (newNotification) => {
 		if(!newNotification.name || !newNotification.user || !newNotification.message) {
 			return { success: false, message: "Please fill in the required fields" };
 		}

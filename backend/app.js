@@ -2,13 +2,11 @@ import express from "express";
 import dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
 import userRoutes from "./routes/user.js";
-import equipmentRoutes from "./routes/equipment.js";
-import ingredientRoutes from "./routes/ingredient.js";
 import notificationRoutes from "./routes/notification.js";
 import recipeRoutes from "./routes/recipe.js";
 import reviewRoutes from "./routes/review.js";
-import tagRoutes from "./routes/tag.js";
 import authenticationRoutes from "./routes/authentication.js";
+import ErrorHandler from "./middleware/ErrorHandler.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
@@ -29,17 +27,20 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use("/api/users", userRoutes);
-app.use("/api/equipments", equipmentRoutes);
-app.use("/api/ingredients", ingredientRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/recipes", recipeRoutes);
 app.use("/api/reviews", reviewRoutes);
-app.use("/api/tags", tagRoutes);
 app.use("/", authenticationRoutes);
 
-app.get('/', (req, res) => {
-	res.send("Home page");
+app.get('/', (req, res, next) => {
+	try {
+		res.send('Home page');
+	} catch (error) {
+		next(error);
+	}
 })
+
+app.use(ErrorHandler)
 
 app.listen(PORT, () => {
 	connectDB();

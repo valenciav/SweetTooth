@@ -34,11 +34,66 @@ h5 { @apply font-bold text-lg }
 }
 
 .form-control {
-	@apply flex flex-col
+	@apply flex flex-col ml-4 gap-2
 }
 
-input[type='text'], input[type='password'] {
-	@apply bg-transparent border-b-2 border-primary ml-4 mt-2 outline-none
+.form-control label {
+	@apply -ml-4
+}
+
+input[type=text], input[type=password] {
+	@apply bg-transparent border-b-2 border-primary outline-none px-2
+}
+
+input:-webkit-autofill {
+	-webkit-box-shadow:0 0 0 50px var(--background) inset;
+	-webkit-text-fill-color: var(--primary);
+}
+
+input:-webkit-autofill:focus {
+	-webkit-box-shadow: 0 0 0 50px var(--background) inset;/*your box-shadow*/
+	-webkit-text-fill-color: var(--primary);
+} 
+
+input[type=number] {
+	@apply w-9 text-center bg-transparent border-primary border-2 outline-none rounded-md px-2
+}
+
+input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+input[type=file] {
+	@apply cursor-pointer text-transparent
+}
+
+input[type=file]::-webkit-file-upload-button {
+	display: none;
+}
+
+input::placeholder, textarea::placeholder {
+	@apply text-primary opacity-60
+}
+
+select {
+	@apply bg-primary bg-opacity-80 text-background rounded-md px-2
+}
+
+select:focus-visible {
+	@apply outline-none
+}
+
+option:hover {
+	@apply bg-secondary
+}
+
+option:disabled {
+	@apply text-background
+}
+
+textarea {
+	@apply bg-transparent border-2 rounded-md p-2 w-full min-h-fit h-28 outline-none max-h-64
 }
 
 small {
@@ -47,4 +102,16 @@ small {
 
 .btn {
 	@apply px-4 py-2 rounded-xl font-semibold bg-secondary text-background
+}
+
+.tag {
+	@apply px-4 py-1 rounded-full border-2 border-primary w-fit cursor-pointer
+}
+
+.container {
+	@apply flex flex-col w-full
+}
+
+.dropdown {
+	@apply absolute top-16 text-background bg-primary bg-opacity-60 rounded-lg p-3
 }

@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { FiX } from "react-icons/fi";
-import { useRecipeStore } from "../store/recipe";
 
-const CreateRecipePage = () => {
-	const { createRecipe } = useRecipeStore();
-
+const CreateRecipePageGrid = () => {
 	const [ recipe, setRecipe ] = useState({
 		title: '',
 		thumbnail: '',
@@ -42,20 +39,16 @@ const CreateRecipePage = () => {
 		const { value } = e.target;
 		let list = recipe.tags;
 		if(e.key == ' ' || e.key == 'Enter') {
-			const tagList = value.split(' ');
-			tagList.filter((tag) => tag.length > 0).map((tag) => {
-				list.push(tag.trim());
-			})
-			console.log(list)
+			if(value.trim().length == 0) return;
+			list.push(value.trim());
 			e.target.value = '';
 			setRecipe({...recipe, 'tags': list});
 		}
-		else if(e.key == 'Backspace' && value.trim().length <= 0) {
-			list.pop();
-			setRecipe({...recipe, 'tags': list});
-			console.log(recipe.tags);
+		else if(e.key == 'Backspace' && value.trim().length == 0) {
+			setRecipe({...recipe, 'Tags':list.pop()});
 		}
 	}
+
 	const handlePictureChange = async (e) => {
 		const { files } = e.target;
 		const url = URL.createObjectURL(files[0]);
@@ -79,33 +72,14 @@ const CreateRecipePage = () => {
 
 	const deleteMember = async (name, idx) => {
 		let list = recipe[name];
-		if(name != 'tags' && list.length > idx) return;
 		list.splice(idx,1);
 		setRecipe({...recipe, [name]: list})
 	}
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		if(!recipe.title || !recipe.thumbnail || !recipe.ingredients || recipe.ingredients.length == 0 || !recipe.equipments ||
-			recipe.equipments.length == 0 || !recipe.instructions || recipe.instructions.length == 0) {
-				return;
-			}
-		const hour = recipe.prepHour || 0;
-		const minute = recipe.prepMin || 0;
-		setRecipe({...recipe, 'prepMinute': (hour*60+parseInt(minute))});
-		const res = await createRecipe(recipe);
-		console.log(res)
-		if(!res.success) {
-			console.log('An error has occured')
-			return;
-		}
-		console.log("Successfully created recipe");
-	}
-	
 	return (
-		<form className="flex flex-col justify-center items-center mx-[10%] md:mx-[15%] lg:mx-[20%] mb-6" onKeyDown={(e) => {if(e.key == 'Enter' && !e.target.toString().includes('TextArea')) {e.preventDefault(); return false}}}>
-			<div className="flex md:flex-row flex-col gap-6 lg:gap-12 justify-center items-center mb-14 w-full">
-				<div className="bg-primary w-5/6 md:w-1/2 aspect-[3/2] rounded-lg overflow-hidden bg-opacity-60 flex justify-center items-center text-background">
+		<form className="grid grid-flow-row-dense mx-[10%] md:mx-[15%] lg:mx-[20%] mb-6" onKeyDown={(e) => {if(e.key == 'Enter' && !e.target.toString().includes('TextArea')) {e.preventDefault(); return false}}}>
+			<div className="grid sm:grid-cols-2 gap-8 mb-14">
+				<div className="bg-primary aspect-[3/2] rounded-lg overflow-hidden bg-opacity-60 flex justify-center items-center text-background">
 					{recipe.thumbnail ?
 						<img src={recipe.thumbnail} className="relative object-cover"/>
 						:
@@ -113,7 +87,7 @@ const CreateRecipePage = () => {
 					}
 					<input type="file" name="thumbnail" accept="image/*" className="w-[calc(50%-268px)] aspect-[3/2] absolute z-10" onChange={handlePictureChange}/>
 				</div>
-				<div className="flex flex-col gap-6 w-5/6 md:w-1/2">
+				<div className="grid gap-6">
 					<input type="text" name="title" placeholder="Recipe Title*" onChange={handleChange} className="font-bold text-3xl m-0"/>
 					<div className="flex justify-between">
 						<div className="flex flex-col gap-1">
@@ -139,9 +113,7 @@ const CreateRecipePage = () => {
 									</div>
 								)
 							})}
-							<div className="flex flex-col">
-								<input type="text" name="tags" className="border-none" onKeyDown={handleTagChange}/>
-							</div>
+							<input type="text" name="tags" className="border-none" onKeyDown={handleTagChange}/>
 						</div>
 					</div>
 				</div>
@@ -158,7 +130,7 @@ const CreateRecipePage = () => {
 						{recipe.ingredients.map((ingredient, index) => {
 							return (
 								<span className="flex gap-2 group" key={`ingredient-${index}`}>
-									<input type="number" value={ingredient.quantity} id={index} name="quantity" className="!w-12" onChange={handleIngredientChange}/>
+									<input type="number" value={ingredient.quantity} id={index} name="quantity" onChange={handleIngredientChange}/>
 									<select id={index} name="unit" value={ingredient.unit} onChange={handleIngredientChange}>
 										<option disabled value={''}>unit</option>
 										<option value={'teaspoon'} >teaspoon</option>
@@ -215,10 +187,10 @@ const CreateRecipePage = () => {
 					<textarea placeholder="Share some tips on this recipe!"></textarea>
 				</div>
 				*Required
-				<button type="submit" onClick={handleSubmit} className="fixed bottom-4 right-4 btn self-end">Post Recipe</button>
+				<button type="submit" className="fixed bottom-4 right-4 btn self-end">Post Recipe</button>
 			</div>
 		</form>
 	)
 }
 
-export default CreateRecipePage
+export default CreateRecipePageGrid

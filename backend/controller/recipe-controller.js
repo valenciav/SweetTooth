@@ -2,13 +2,14 @@ import mongoose from "mongoose";
 import Recipe from "../models/Recipes.js";
 
 export const createRecipe = async (req, res) => {
-	const recipe = req.body;
-	if(!recipe.name || !recipe.author || !recipe.prepMinute || !recipe.portion || !recipe.description || !recipe.ingredients || !recipe.equipments || !recipe.instructions) {
+	const { recipe } = req.body;
+	console.log(recipe)
+	const user = req.user;
+	console.log(user)
+	if(!recipe.title || !recipe.prepMinute || !recipe.portion || !recipe.description || !recipe.ingredients || !recipe.equipments || !recipe.instructions) {
 		return res.status(400).json({ success: false, message: "Please provide all required information" });
 	}
-
-	const newRecipe = new Recipe(recipe);
-
+	const newRecipe = Recipe({...recipe, 'author':user});
 	try {
 		await newRecipe.save();
 		res.status(201).json({ success: true, data: newRecipe });

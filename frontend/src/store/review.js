@@ -3,8 +3,8 @@ import { create } from 'zustand';
 export const useReviewStore = create((set) => ({
 	reviews: [],
 	setReviews: (reviews) => set({ reviews }),
-	createReviews: async (newReview) => {
-		if(!newReview.user || !newReview.recipe || !newReview.rating) {
+	createReview: async (review) => {
+		if(!review.user || !review.recipe || !review.rating) {
 			return { success: false, message: "Please fill in the required fields" };
 		}
 		const res = await fetch('/api/reviews', {
@@ -12,7 +12,7 @@ export const useReviewStore = create((set) => ({
 			headers: {
 				"Content-Type": "application/json"
 			},
-			body: JSON.stringify(newReview)
+			body: JSON.stringify({review})
 		});
 		const data = await res.json();
 		set((state) => ({reviews: [...state.reviews, data.data]}));

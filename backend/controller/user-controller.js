@@ -28,8 +28,12 @@ export const createUser = async (req, res) => {
 }
 
 export const getProfile = async (req, res) => {
-	const user = req.user;
-	res.status(200).json({ success: true, data: user});
+	try {
+		const user = req.user;
+		res.status(200).json({ success: true, data: user});
+	} catch (error) {
+		console.log("Error in get profile:", error);
+	}
 }
 
 export const editUser = async (req, res) => {
@@ -84,8 +88,8 @@ export const checkEmailAvailability = async (req, res) => {
 }
 
 export const getBookmarks = async (req, res) => {
-	const id = req.user._id;
 	try {
+		const id = req.user._id;
 		const user = await User.findOne({_id:id}).select('-password').populate('bookmarks');
 		const bookmarks = user.bookmarks;
 		res.status(200).json({ success: true, data: bookmarks });
@@ -96,9 +100,9 @@ export const getBookmarks = async (req, res) => {
 }
 
 export const addBookmark = async (req, res) => {
-	const id  = req.user._id;
-	const { recipeId } = req.body;
 	try {
+		const id  = req.user._id;
+		const { recipeId } = req.body;
 		let bookmarks = await User.findOne({_id: id}).select('bookmarks').then((response) => response.bookmarks);
 		if(!bookmarks || bookmarks.indexOf(recipeId) == -1) bookmarks.push(recipeId);
 		else bookmarks = bookmarks.filter((bookmark)=> {bookmark == recipeId});

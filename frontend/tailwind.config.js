@@ -10,6 +10,7 @@ export default {
       current: 'currentColor',
       'white': '#ffffff',
       'black': '#000000',
+      'red': '#ff0000',
       'background': {
         DEFAULT: '#FFF5E4'
       },

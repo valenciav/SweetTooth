@@ -29,7 +29,6 @@ const SignInPage = () => {
 			body: JSON.stringify(credentials)
 		})
 		const result = await signInRes.json();
-		console.log(result)
 		if(!result.success) {
 			console.log('Failed to log in');
 			return;

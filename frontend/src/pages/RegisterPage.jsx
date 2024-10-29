@@ -86,7 +86,7 @@ const RegisterPage = () => {
 	}
 
 	const handleChange = async (e) => {
-		const { name, value} = e.target;
+		const { name, value } = e.target;
 		setCredentials({ ...credentials, [name]: value});
 		if(validate(name, value)) {
 			if(name === 'username') checkUsernameAvailability(value);
