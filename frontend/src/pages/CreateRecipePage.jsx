@@ -4,10 +4,9 @@ import { useRecipeStore } from "../store/recipe";
 
 const CreateRecipePage = () => {
 	const { createRecipe } = useRecipeStore();
-
 	const [ recipe, setRecipe ] = useState({
 		title: '',
-		thumbnail: '',
+		thumbnail: null,
 		prepHour: null,
 		prepMin: null,
 		portion: null,
@@ -24,6 +23,8 @@ const CreateRecipePage = () => {
 		instructions: [''],
 		tips: ''
 	});
+
+	const [ pictureLink, setPictureLink ] = useState(null);
 
 	const handleChange = async (e) => {
 		const { name, value} = e.target;
@@ -59,7 +60,8 @@ const CreateRecipePage = () => {
 	const handlePictureChange = async (e) => {
 		const { files } = e.target;
 		const url = URL.createObjectURL(files[0]);
-		setRecipe({...recipe, 'thumbnail': url});
+		setRecipe({...recipe, 'thumbnail': files[0]});
+		setPictureLink(url);
 	}
 
 	const handleIngredientChange = async (e) => {
@@ -87,27 +89,30 @@ const CreateRecipePage = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		if(!recipe.title || !recipe.thumbnail || !recipe.ingredients || recipe.ingredients.length == 0 || !recipe.equipments ||
-			recipe.equipments.length == 0 || !recipe.instructions || recipe.instructions.length == 0) {
-				return;
-			}
+			recipe.equipments.length == 0 || !recipe.instructions || recipe.instructions.length == 0 || recipe.prepHour < 0 || recipe.prepMin < 0) {
+			return;
+		}
 		const hour = recipe.prepHour || 0;
 		const minute = recipe.prepMin || 0;
 		setRecipe({...recipe, 'prepMinute': (hour*60+parseInt(minute))});
-		const res = await createRecipe(recipe);
-		console.log(res)
+		const formData = new FormData();
+		for(let prop in recipe) {
+			formData.append(prop, recipe[prop]);
+		}
+		// formData.append("thumbnail", recipe.thumbnail);
+		const res = await createRecipe(formData);
 		if(!res.success) {
-			console.log('An error has occured')
+			console.log(res.message);
 			return;
 		}
-		console.log("Successfully created recipe");
 	}
 	
 	return (
-		<form className="flex flex-col justify-center items-center mx-[10%] md:mx-[15%] lg:mx-[20%] mb-6" onKeyDown={(e) => {if(e.key == 'Enter' && !e.target.toString().includes('TextArea')) {e.preventDefault(); return false}}}>
+		<form method="post" encType="multipart/form-data" className="flex flex-col justify-center items-center mx-[10%] md:mx-[15%] lg:mx-[20%] mb-6" onKeyDown={(e) => {if(e.key == 'Enter' && !e.target.toString().includes('TextArea')) {e.preventDefault(); return false}}}>
 			<div className="flex md:flex-row flex-col gap-6 lg:gap-12 justify-center items-center mb-14 w-full">
 				<div className="bg-primary w-5/6 md:w-1/2 aspect-[3/2] rounded-lg overflow-hidden bg-opacity-60 flex justify-center items-center text-background">
-					{recipe.thumbnail ?
-						<img src={recipe.thumbnail} className="relative object-cover"/>
+					{pictureLink ?
+						<img src={pictureLink} className="relative object-cover"/>
 						:
 						<div className="relative">Upload Picture*</div>
 					}
@@ -119,13 +124,13 @@ const CreateRecipePage = () => {
 						<div className="flex flex-col gap-1">
 							<label className="font-bold">Preparation Time:</label>
 							<div className="flex gap-3">
-								<span><input type="number" name="prepHour" value={recipe.prepHour} onChange={handleChange}/> hrs</span>
-								<span><input type="number" name="prepMin" value={recipe.prepMin} onChange={handleChange}/> mins</span>
+								<span><input type="number" name="prepHour" value={recipe.prepHour} min={0} onChange={handleChange}/> hrs</span>
+								<span><input type="number" name="prepMin" value={recipe.prepMin} min={0} onChange={handleChange}/> mins</span>
 							</div>
 						</div>
 						<div className="flex flex-col gap-1 w-1/2">
 							<label className="font-bold">Portion:</label>
-							<span><input type="number" name="portion" value={recipe.portion} onChange={handleChange}/> servings</span>
+							<span><input type="number" name="portion" min={1} value={recipe.portion} onChange={handleChange}/> servings</span>
 						</div>
 					</div>
 					<div className="flex flex-col gap-1">
@@ -173,7 +178,7 @@ const CreateRecipePage = () => {
 									</select>
 									of
 									<input type="text" className="border-2 rounded-md" value={ingredient.item} id={index} name="item" onChange={handleIngredientChange}/>
-									<button type="button" className="hidden group-hover:block" onClick={() => deleteMember('ingredients', index)}><FiX /></button>
+									<button type="button" className="invisible group-hover:visible" onClick={() => deleteMember('ingredients', index)}><FiX /></button>
 								</span>
 							)
 						})}
@@ -212,10 +217,10 @@ const CreateRecipePage = () => {
 				</div>
 				<div className="form-control">
 					<label htmlFor="tips"><h5>Tips & Tricks</h5></label>
-					<textarea placeholder="Share some tips on this recipe!"></textarea>
+					<textarea placeholder="Share some tips on this recipe!" name="tips" onChange={handleChange}></textarea>
 				</div>
 				*Required
-				<button type="submit" onClick={handleSubmit} className="fixed bottom-4 right-4 btn self-end">Post Recipe</button>
+				<button type="submit" onClick={handleSubmit} className="bottom-4 right-4 btn self-end">Post Recipe</button>
 			</div>
 		</form>
 	)

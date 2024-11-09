@@ -24,7 +24,7 @@ const HomePage = () => {
 				</h1>
 				<Carousel/>
 			</div>
-			<div id="explore">
+			<div id="explore" className="flex gap-4">
 				{
 					recipes.map((recipe)=> {
 						return (

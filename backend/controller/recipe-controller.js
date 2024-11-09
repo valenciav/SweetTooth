@@ -2,14 +2,13 @@ import mongoose from "mongoose";
 import Recipe from "../models/Recipes.js";
 
 export const createRecipe = async (req, res) => {
-	const { recipe } = req.body;
-	console.log(recipe)
+	const recipe = req.body;
+	const thumbnail = req.file;
 	const user = req.user;
-	console.log(user)
 	if(!recipe.title || !recipe.prepMinute || !recipe.portion || !recipe.description || !recipe.ingredients || !recipe.equipments || !recipe.instructions) {
 		return res.status(400).json({ success: false, message: "Please provide all required information" });
 	}
-	const newRecipe = Recipe({...recipe, 'author':user});
+	const newRecipe = Recipe({...recipe, 'author':user, 'thumbnail': thumbnail});
 	try {
 		await newRecipe.save();
 		res.status(201).json({ success: true, data: newRecipe });
@@ -32,7 +31,8 @@ export const getRecipes = async (req, res) => {
 export const getRecipeById = async (req, res) => {
 	const { id } = req.params;
 	try {
-		const recipe = await Recipe.findById(id);
+		const recipe = await Recipe.findById(id).populate('author', 'username');
+		console.log(recipe)
 		res.status(200).json({ success: true, data: recipe });
 	} catch (error) {
 		console.log("Error in get recipe information:", error.message);

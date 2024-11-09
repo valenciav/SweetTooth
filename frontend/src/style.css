@@ -12,7 +12,7 @@
 
 @font-face {
 	font-family: senRegular;
-	src: url(Sen-Regular.ttf);
+	src: url("../Sen-Regular.ttf");
 }
 
 body {
@@ -113,5 +113,5 @@ small {
 }
 
 .dropdown {
-	@apply absolute top-16 text-background bg-primary bg-opacity-60 rounded-lg p-3
+	@apply absolute text-background bg-primary bg-opacity-60 rounded-lg p-3
 }

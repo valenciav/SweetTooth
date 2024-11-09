@@ -54,7 +54,7 @@ const NavBar = () => {
 				<div className='flex gap-3'>
 					<div className='flex flex-col justify-center items-start'>
 						<button className= 'text-background z-10' onClick={toggleNotification}><FaBell size={24}/></button>
-						<ul className= {`${notificationVis ? 'visible' : 'hidden'} dropdown w-96 -translate-x-full`}>
+						<ul className= {`${notificationVis ? 'visible' : 'hidden'} dropdown w-96 top-16 -translate-x-full`}>
 							<li>Welcome to SweetTooth! Here&apos;s a cookie 🍪</li>
 							{
 
@@ -63,7 +63,7 @@ const NavBar = () => {
 					</div>
 					<div className='flex flex-col'>
 						<button className='bg-black rounded-full z-10' onClick={toggleProfileMenu}><img src={'/SweetToothIcon_Resized.png'} alt='Profile Picture' className='h-10 rounded-full'/></button>
-						<ul className={`${profileMenuVis ? 'visible' : 'hidden'} dropdown -translate-x-3/4`}>
+						<ul className={`${profileMenuVis ? 'visible' : 'hidden'} dropdown top-16 -translate-x-3/4`}>
 							<li><a href='/' className='flex items-center gap-2'><FaUserLarge />Profile</a></li>
 							<hr></hr>
 							<li><a href='/bookmark' className='flex items-center gap-2'><IoBookmark />Bookmarks</a></li>

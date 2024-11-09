@@ -7,7 +7,7 @@ import RegisterPage from './pages/RegisterPage';
 import SignInPage from './pages/SignInPage';
 import { FaChevronLeft } from "react-icons/fa";
 import BookmarkPage from './pages/BookmarkPage';
-import CreateRecipePageGrid from './pages/CreateRecipePageGrid';
+import RecipePage from './pages/RecipePage';
 
 function App() {
   const navigate = useNavigate();
@@ -18,10 +18,10 @@ function App() {
       <Routes>
         <Route path="/" element={ <HomePage/> }/>
         <Route path="/createRecipe" element={ <CreateRecipePage/> }/>
-        <Route path="/createRecipeGrid" element={ <CreateRecipePageGrid/> }/>
         <Route path="/signIn" element={ <SignInPage/> }/>
         <Route path="/register" element={ <RegisterPage/> }/>
         <Route path="/bookmark" element={ <BookmarkPage /> }/>
+        <Route path="/recipe/:id" element={ <RecipePage/> }/>
       </Routes>
     </div>
   )

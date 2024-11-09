@@ -2,16 +2,36 @@ import { create } from 'zustand';
 
 export const useRecipeStore = create((set) => ({
 	recipes: [],
+	currentRecipe: {
+		author: {
+			username: ''
+		},
+		title: '',
+		thumbnail: null,
+		prepHour: null,
+		prepMin: null,
+		portion: null,
+		tags: [],
+		description: '',
+		ingredients: [
+			{
+				quantity: null,
+				unit: '',
+				item: ''
+			}
+		],
+		equipments: ['Bowl'],
+		instructions: [''],
+		tips: ''
+	},
 	setRecipes: (recipes) => set({ recipes }),
+	setCurrRecipe: (currentRecipe) => set({ currentRecipe }),
 	createRecipe: async (recipe) => {
 		try {
 			const res = await fetch('/api/recipes', {
 				credentials: 'include',
 				method: "POST",
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify({recipe})
+				body: recipe
 			});
 			const data = await res.json();
 			if(!data.success) return ({ success: false, message: data.message});
@@ -31,14 +51,18 @@ export const useRecipeStore = create((set) => ({
 		}
 	},
 	fetchRecipeById: async (id) => {
-		const res = await fetch(`/api/recipes/${id}`).then((response) => response.json());
-		return res.data;
+		try {
+			const res = await fetch(`/api/recipes/${id}`).then((response) => response.json());
+			set({currentRecipe: res.data});
+		} catch (error) {
+			console.log(error)
+		}
 	},
 	editRecipe: async (id, updatedRecipe) => {
 		if(!updatedRecipe.title || !updatedRecipe.author || !updatedRecipe.prepMinute || !updatedRecipe.portion || !updatedRecipe.description || !updatedRecipe.ingredients || !updatedRecipe.equipments || !updatedRecipe.instructions) {
 			return { success: false, message: "Please fill in the required fields" };
 		}
-		const res = await fetch('/api/recipes/id', {
+		const res = await fetch(`/api/recipes/${id}`, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json"
