@@ -1,24 +1,53 @@
 import { create } from 'zustand';
 
 export const useBookmarkStore = create((set) => ({
-	bookmarks: [],
+	bookmarks: [{
+		user: null,
+		recipe: null
+	}],
 	setBookmarks: (bookmarks) => set({ bookmarks }),
 	createBookmark: async (recipeId) => {
-		const res = await fetch('/api/users/addBookmark', {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json"
-			},
-			body: JSON.stringify({recipeId})
-		});
-		const data = await res.json();
-		set({bookmarks: data.data});
-		return { success: true, message: "Bookmark created successfully" };
+		try {
+			const res = await fetch('/api/bookmarks/', {
+				credentials: "include",
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({recipeId})
+			}).then((response) => response.json()).then((response) => response.data);
+			set((state) => ({bookmarks: [...state.bookmarks, res]}));
+			return { success: true, message: "Bookmark created successfully" };
+		} catch (error) {
+			console.log(error);
+			return { success: false, message: "Failed to add bookmark"};
+		}
 	},
 	fetchBookmarks: async () => {
-		const res = await fetch(`/api/users/getBookmarks`, {credentials: 'include'}).then((response) => response.json());
-		const bookmarks = res.data;
-		set({ bookmarks });
-		return bookmarks;
+		try {
+			const res = await fetch(`/api/bookmarks/`, {credentials: 'include'}).then((response) => response.json()).then((response) => response.data);
+			set({ bookmarks: res });
+			return { success: true, message: "Successfully fetched bookmarks" };
+		} catch (error) {
+			console.log(error);
+			return { success: false, message: "Failed to get bookmarks"};
+		}
+	},
+	deleteBookmark: async (recipeId) => {
+		try {
+			const res = await fetch(`/api/bookmarks/`, {
+				credentials: "include",
+				method: "DELETE",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({recipeId})
+			}).then((response) => response.json());
+			set((state) => ({bookmarks: state.bookmarks.filter((bookmark) => bookmark.recipe !== recipeId)}));
+			return { success: true, message: "Bookmark removed successfully"};
+		} catch (error) {
+			console.log(error);
+			return { success: false, message: "Failed to remove bookmark"};
+		}
 	}
 }))

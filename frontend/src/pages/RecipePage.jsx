@@ -12,7 +12,7 @@ const RecipePage = () => {
 	const {id} = useParams();
 	const {currentRecipe, fetchRecipeById} = useRecipeStore();
 	const {user, fetchUserData} = useUserStore();
-	const {bookmarks, createBookmark, fetchBookmarks} = useBookmarkStore();
+	const {bookmarks, createBookmark, fetchBookmarks, deleteBookmark} = useBookmarkStore();
 	const [menuVisibility, setMenuVisibility] = useState(false);
 	
 	useEffect(() => {
@@ -37,6 +37,8 @@ const RecipePage = () => {
 			return;
 		}
 		const recipeId = currentRecipe._id
+		bookmarks.find((bookmark) => bookmark.recipe == currentRecipe._id) ? 
+		deleteBookmark(recipeId) :
 		createBookmark(recipeId);
 	}
 
@@ -49,8 +51,8 @@ const RecipePage = () => {
 							<h2>{currentRecipe.title}</h2>
 							<p>By <a href={`/user/${currentRecipe.author.username}`} className='text-secondary'>{currentRecipe.author.username}</a></p>
 							<span className='flex items-center gap-2'>
-								<button onClick={addBookmark}>{bookmarks?.find((bookmark) => bookmark._id == currentRecipe._id) ? <IoBookmark /> : <IoBookmarkOutline />}</button>
-								{currentRecipe.bookmarks?.length}
+								<button onClick={addBookmark}>{bookmarks.find((bookmark) => bookmark.recipe == currentRecipe._id) ? <IoBookmark /> : <IoBookmarkOutline />}</button>
+								{/* {currentRecipe.bookmarks.length} */}
 							</span>
 						</div>
 							<div className='flex justify-center items-center gap-2'>

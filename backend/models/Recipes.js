@@ -22,10 +22,7 @@ const recipeSchema = new mongoose.Schema({
 	tags: [{
 		type: String
 	}],
-	description: {
-		type: String,
-		required: true
-	},
+	description: String,
 	ingredients: [{
 		ingredient: String,
 		quantity: Number,

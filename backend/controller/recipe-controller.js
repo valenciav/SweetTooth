@@ -3,10 +3,11 @@ import Recipe from "../models/Recipes.js";
 
 export const createRecipe = async (req, res) => {
 	const recipe = req.body;
-	const thumbnail = req.file;
+	const thumbnail = req.file.buffer;
+	console.log(thumbnail)
 	const user = req.user;
-	if(!recipe.title || !recipe.prepMinute || !recipe.portion || !recipe.description || !recipe.ingredients || !recipe.equipments || !recipe.instructions) {
-		return res.status(400).json({ success: false, message: "Please provide all required information" });
+	if(!recipe.title || !recipe.prepMinute || !recipe.portion || recipe.ingredients.length == 0 || !recipe.ingredients[0].unit || !recipe.ingredients[0].quantity || !recipe.ingredients[0].unit || !recipe.equipments || !recipe.instructions) {
+			return res.status(400).json({ success: false, message: "Incomplete information"});
 	}
 	const newRecipe = Recipe({...recipe, 'author':user, 'thumbnail': thumbnail});
 	try {
@@ -32,7 +33,6 @@ export const getRecipeById = async (req, res) => {
 	const { id } = req.params;
 	try {
 		const recipe = await Recipe.findById(id).populate('author', 'username');
-		console.log(recipe)
 		res.status(200).json({ success: true, data: recipe });
 	} catch (error) {
 		console.log("Error in get recipe information:", error.message);

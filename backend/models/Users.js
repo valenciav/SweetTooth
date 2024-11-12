@@ -19,10 +19,6 @@ const userSchema = new Schema({
 	profilePicture: Buffer,
 	bannerPicture: Buffer,
 	bio: String,
-	bookmarks: [{
-		type: Schema.Types.ObjectId,
-		ref: 'Recipe'
-	}],
 	followings: [{
 		type: Schema.Types.ObjectId,
 		ref: 'User'

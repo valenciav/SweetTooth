@@ -47,7 +47,6 @@ const CreateRecipePage = () => {
 			tagList.filter((tag) => tag.length > 0).map((tag) => {
 				list.push(tag.trim());
 			})
-			console.log(list)
 			e.target.value = '';
 			setRecipe({...recipe, 'tags': list});
 		}
@@ -99,7 +98,6 @@ const CreateRecipePage = () => {
 		for(let prop in recipe) {
 			formData.append(prop, recipe[prop]);
 		}
-		// formData.append("thumbnail", recipe.thumbnail);
 		const res = await createRecipe(formData);
 		if(!res.success) {
 			console.log(res.message);
@@ -153,7 +151,7 @@ const CreateRecipePage = () => {
 			</div>
 			<div className="w-full flex flex-col gap-8">
 				<div className="form-control">
-					<label htmlFor="description"><h5>Description*</h5></label>
+					<label htmlFor="description"><h5>Description</h5></label>
 					<textarea name="description" className={recipe.description.length > 2000 ? 'border-secondary shadow shadow-red' : 'border-primary'} placeholder="How would you describe this menu?" onChange={handleChange}></textarea>
 					<small>{recipe.description.length}/2000</small>
 				</div>

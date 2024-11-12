@@ -19,22 +19,7 @@ const SignInPage = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		if(!credentials.email || !credentials.password) return;
-		const signInRes = await fetch('http://localhost:5000/signIn', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			credentials: 'include',
-			body: JSON.stringify(credentials)
-		})
-		const result = await signInRes.json();
-		if(!result.success) {
-			console.log('Failed to log in');
-			return;
-		}
 		login(credentials);
-		console.log('Successfully logged in');
 		navigate(-1);
 		setCredentials({
 			email: '',

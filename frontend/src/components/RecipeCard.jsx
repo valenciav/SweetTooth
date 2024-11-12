@@ -10,7 +10,7 @@ import { PiStarBold, PiStarHalfFill, PiStarFill } from "react-icons/pi";
 const RecipeCard = ({recipe}) => {
 	const navigate = useNavigate();
 	const { user, fetchUserData } = useUserStore();
-	const {bookmarks, createBookmark, fetchBookmarks} = useBookmarkStore();
+	const {bookmarks, createBookmark, fetchBookmarks, deleteBookmark} = useBookmarkStore();
 	const averageReview = recipe.reviews.reduce((review, sum) => review.rating + sum, 0);
 	useEffect(() => {
 		fetchUserData();
@@ -25,20 +25,19 @@ const RecipeCard = ({recipe}) => {
 			navigate('/signIn');
 			return;
 		}
-		const recipeId = recipe._id
+		const recipeId = recipe._id;
+		bookmarks.find((bookmark) => bookmark.recipe == recipe._id) ? 
+		deleteBookmark(recipeId) :
 		createBookmark(recipeId);
 	}
-
-	console.log(recipe.thumbnail)
-
-
+	
 	return (
 		<div className='w-60 h-60 rounded-lg overflow-clip invertPalette flex flex-col justify-center items-center cursor-pointer'>
 			<img className = "h-2/3" src={recipe.thumbnail || '/SweetToothIcon.png'} alt={`Picture of ${recipe.name}`}/>
 			<div className='invertPalette px-4 py-2 w-full'>
-				<div className='flex justify-between items-center' onClick={()=>navigate(`/recipe/${recipe._id}`)}>
+				<div className='flex justify-between items-center z-0' onClick={()=>navigate(`/recipe/${recipe._id}`)}>
 					<h3>{recipe.title}</h3>
-					<button type='button' onClick={addBookmark} className='text-2xl'>{bookmarks?.find((bookmark) => bookmark._id == recipe._id) ? <IoBookmark /> : <IoBookmarkOutline /> }</button>
+					<button type='button' onClick={addBookmark} className='text-2xl z-10'>{bookmarks.find((bookmark) => bookmark.recipe == recipe._id) ? <IoBookmark /> : <IoBookmarkOutline /> }</button>
 				</div>
 				<div className='flex items-center gap-2'>
 					<span className='flex'>
@@ -46,10 +45,10 @@ const RecipeCard = ({recipe}) => {
 							[1,2,3,4,5].map((i) => {
 								return(
 									averageReview >= i ?
-									<PiStarFill /> :
+									<PiStarFill key={i}/> :
 									averageReview >= i-0.5 ?
-									<PiStarHalfFill /> :
-									<PiStarBold />
+									<PiStarHalfFill key={i}/> :
+									<PiStarBold key={i} />
 								)
 							})
 						}

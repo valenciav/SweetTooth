@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
 const NotificationSchema = new Schema({
-	user:{
+	user: {
 		type: Schema.Types.ObjectId,
 		ref: 'User',
 		required: true

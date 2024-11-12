@@ -86,31 +86,3 @@ export const checkEmailAvailability = async (req, res) => {
 		res.status(500).json({ success: false, message: "Server Error" });
 	}
 }
-
-export const getBookmarks = async (req, res) => {
-	try {
-		const id = req.user._id;
-		const user = await User.findOne({_id:id}).select('-password').populate('bookmarks');
-		const bookmarks = user.bookmarks;
-		res.status(200).json({ success: true, data: bookmarks });
-	} catch (error) {
-		console.log("Error in getting bookmarked recipes: ", error.message);
-		res.status(500).json({ success: false, message: "Server Error" });
-	}
-}
-
-export const addBookmark = async (req, res) => {
-	try {
-		const id  = req.user._id;
-		const { recipeId } = req.body;
-		let bookmarks = await User.findOne({_id: id}).select('bookmarks').then((response) => response.bookmarks);
-		if(!bookmarks || bookmarks.indexOf(recipeId) == -1) bookmarks.push(recipeId);
-		else bookmarks = bookmarks.filter((bookmark)=> {bookmark == recipeId});
-		await User.findByIdAndUpdate(id, {bookmarks: bookmarks});
-		const newBookmarks = await User.findOne({_id: id}).select('bookmarks').populate('bookmarks')
-		res.status(200).json({ success: true, data: newBookmarks.bookmarks, message: "Bookmarked Recipe"});
-	} catch (error) {
-		console.log("Error in adding bookmark: ", error.message);
-		res.status(500).json({ success: false, message: "Server Error" });
-	}
-}

@@ -30,21 +30,6 @@ const NavBar = () => {
 		if(notificationVis) setNotificationVis(false);
 	}
 
-	const signOut = async () => {
-		const res = await fetch('http://localhost:5000/signOut', {
-			method: 'POST',
-			headers: {
-				'Content-type': 'application/json'
-			}
-		})
-		const result = await res.json();
-		if(result.success) {
-			console.log('Successfully logged out');
-			logout()
-		}
-		else console.log('Failed to log out');
-	}
-
 	return (
 		<nav className="h-16 bg-primary w-full py-3 px-5 flex justify-between items-center">
 			<div className={`absolute w-full h-full top-0 left-0 ${notificationVis || profileMenuVis ? 'block' : 'hidden'}`} onClick={collapseDropdown}></div>
@@ -68,12 +53,12 @@ const NavBar = () => {
 							<hr></hr>
 							<li><a href='/bookmark' className='flex items-center gap-2'><IoBookmark />Bookmarks</a></li>
 							<hr></hr>
-							<li><a href='' onClick={signOut} className='flex items-center gap-2'><IoLogOut />Sign Out</a></li>
+							<li><a href='' onClick={logout} className='flex items-center gap-2'><IoLogOut />Sign Out</a></li>
 						</ul>
 					</div>
 				</div>
 				:
-				<button type="button" className="px-4 py-2 rounded-xl font-semibold bg-background text-secondary" onClick={()=>{navigate('/signIn')}}>Sign In</button>
+				<button type="button" className="px-4 py-2 rounded-xl font-semibold bg-background text-secondary" onClick={() => navigate('/signIn')}>Sign In</button>
 			}
 		</nav>
 	)
