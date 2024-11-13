@@ -48,13 +48,9 @@ app.use("/api/reviews", reviewRoutes);
 app.use("/api/bookmarks", bookmarkRoutes);
 app.use("/", authenticationRoutes);
 
-app.get('/', (req, res, next) => {
-	try {
-		res.send('Home page');
-	} catch (error) {
-		next(error);
-	}
-})
+// app.get('/', (req, res, next) => {
+// 	res.send('Home page')
+// })
 
 app.use(ErrorHandler)
 

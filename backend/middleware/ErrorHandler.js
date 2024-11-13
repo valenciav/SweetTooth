@@ -1,6 +1,5 @@
 const ErrorHandler = (err, req, res, next) => {
-	console.log('Error handling middleware');
-	console.log(err)
+	console.log(`Error ${err.status} in ${req.originalUrl}: ${err.message}`);
 }
 
 export default ErrorHandler;

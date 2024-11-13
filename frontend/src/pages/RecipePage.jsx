@@ -43,6 +43,7 @@ const RecipePage = () => {
 	}
 
 	return (
+		currentRecipe ?
 		<div className='flex flex-col justify-center items-center mx-[10%] md:mx-[15%] lg:mx-[20%] mb-6'>
 			<div className="flex md:flex-row flex-col gap-6 lg:gap-12 justify-center items-center mb-14 w-full">
 					<img src={currentRecipe.thumbnail || '/SweetToothIcon.png'} className={`w-1/3 rounded-lg bg-primary ${currentRecipe.thumbnail ? 'aspect-[3/2]' : 'h-1/2'}`} alt='Recipe Thumbnail'/>
@@ -141,6 +142,11 @@ const RecipePage = () => {
 						{currentRecipe.tips}
 					</div>}
 				</div>
+			</div>
+			:
+			<div className='flex flex-col justify-center items-center'>
+						<h1>Oops! Recipe not found!</h1>
+						<h4>This recipe may have been removed</h4>
 			</div>
 	)
 }

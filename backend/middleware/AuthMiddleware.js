@@ -7,13 +7,13 @@ dotenv.config();
 export  const userVerification = (req, res, next) => {
 	const token = req.cookies.token;
 	if(!token) {
-		res.status(401).json({ success: false });
-		throw new Error('Unauthorized');
+		return next({status: 401, message:"User not signed in"});
+		// throw new Error('Unauthorized');
 	}
 	jwt.verify(token, process.env.TOKEN_KEY, async(err, data) => {
 		if(err) {
-			res.json({ success: false });
-			throw new Error('Unauthorized');
+			return next({status: 401, message:"Unauthorized"});
+			// throw new Error('Unauthorized');
 		}
 		else {
 			const user = await User.findById(data.id).select('-email -password');
@@ -22,8 +22,8 @@ export  const userVerification = (req, res, next) => {
 				next()
 			}
 			else {
-				res.json({ status: false });
-				throw new Error('Unauthorized');
+				return next({status: 401, message: "Please sign in"});
+				// throw new Error('Unauthorized');
 			}
 		}
 	})

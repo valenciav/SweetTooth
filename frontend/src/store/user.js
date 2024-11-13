@@ -5,12 +5,13 @@ export const useUserStore = create((set) => ({
 	isAuthenticated: false,
 	fetchUserData: async () => {
 		try {
-			const res = await fetch('api/users/getProfile', {
+			const res = await fetch('/api/users/getProfile', {
 				credentials: 'include'
 			}).then((response) => response.json());
-			set({ user: res.data });
+			if(res.success) set({ user: res.data });
 		} catch (error) {
-			console.log(error)
+			console.log(error);
+			return { success: false, message: "Failed to fetch user data"};
 		}
 	},
 	login: async (user) => {
@@ -24,7 +25,7 @@ export const useUserStore = create((set) => ({
 			body: JSON.stringify(user)
 		}).then((response) => response.json());
 		if(!res.success) {
-			console.log('Failed to log in');
+			console.log(res.message);
 			return {success: false, message: 'Failed to log in'};
 		}
 		console.log('Successfully logged in');
