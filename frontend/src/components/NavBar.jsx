@@ -47,7 +47,7 @@ const NavBar = () => {
 						</ul>
 					</div>
 					<div className='flex flex-col'>
-						<button className='bg-black rounded-full z-10' onClick={toggleProfileMenu}><img src={'/SweetToothIcon_Resized.png'} alt='Profile Picture' className='h-10 rounded-full'/></button>
+						<button className='bg-secondary rounded-full z-10' onClick={toggleProfileMenu}><img src={'/SweetToothIcon.png'} alt='Profile Picture' className='h-10 rounded-full'/></button>
 						<ul className={`${profileMenuVis ? 'visible' : 'hidden'} dropdown top-16 -translate-x-3/4`}>
 							<li><a href='/' className='flex items-center gap-2'><FaUserLarge />Profile</a></li>
 							<hr></hr>

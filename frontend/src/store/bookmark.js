@@ -1,10 +1,7 @@
 import { create } from 'zustand';
 
 export const useBookmarkStore = create((set) => ({
-	bookmarks: [{
-		user: null,
-		recipe: null
-	}],
+	bookmarks: [],
 	setBookmarks: (bookmarks) => set({ bookmarks }),
 	createBookmark: async (recipeId) => {
 		try {
@@ -43,7 +40,7 @@ export const useBookmarkStore = create((set) => ({
 				},
 				body: JSON.stringify({recipeId})
 			}).then((response) => response.json());
-			set((state) => ({bookmarks: state.bookmarks.filter((bookmark) => bookmark.recipe !== recipeId)}));
+			set((state) => ({bookmarks: state.bookmarks.filter((bookmark) => bookmark.recipe._id !== recipeId)}));
 			return { success: true, message: "Bookmark removed successfully"};
 		} catch (error) {
 			console.log(error);

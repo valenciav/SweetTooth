@@ -4,7 +4,7 @@ import Bookmark from "../models/Bookmark.js";
 export const getBookmarks = async (req, res) => {
 	try {
 		const id = req.user._id;
-		const bookmarks = await Bookmark.find({user: id});
+		const bookmarks = await Bookmark.find({user: id}).populate("recipe");
 		res.status(200).json({ success: true, data: bookmarks });
 	} catch (error) {
 		console.log("Error in getting bookmarked recipes: ", error.message);
@@ -18,7 +18,8 @@ export const addBookmark = async (req, res) => {
 		const { recipeId } = req.body;		
 		const newBookmark = new Bookmark({user: id, recipe: recipeId});
 		await newBookmark.save();
-		res.status(200).json({ success: true, data: newBookmark, message: "Bookmarked Recipe"});
+		const bookmark = await newBookmark.populate("recipe");
+		res.status(200).json({ success: true, data: bookmark, message: "Bookmarked Recipe"});
 	} catch (error) {
 		console.log("Error in adding bookmark: ", error.message);
 		res.status(500).json({ success: false, message: "Server Error" });

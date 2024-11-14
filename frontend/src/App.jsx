@@ -14,7 +14,7 @@ function App() {
   return (
     <div className="min-h-screen">      
       { location.pathname != "/signIn" && location.pathname != "/register" && <NavBar/>}
-      { location.pathname != "/" && <button type='button' className='text-3xl m-2' onClick={() => (navigate(-1))}><FaChevronLeft/></button>}
+      { location.pathname != "/" && <div className='flex items-center text-3xl font-bold m-2 gap-4'><button type='button' onClick={() => (navigate(-1))}><FaChevronLeft/></button>{location.pathname.charAt(1).toUpperCase() + location.pathname.substring(2)}</div>}
       <Routes>
         <Route path="/" element={ <HomePage/> }/>
         <Route path="/createRecipe" element={ <CreateRecipePage/> }/>

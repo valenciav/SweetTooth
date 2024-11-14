@@ -21,7 +21,7 @@ export const createRecipe = async (req, res) => {
 
 export const getRecipes = async (req, res) => {
 	try {
-		const recipes = await Recipe.find({});
+		const recipes = await Recipe.find({}).populate('author', 'username');
 		res.status(200).json({ success: true, data: recipes });
 	} catch (error) {
 		console.log("Error in get recipe:", error.message);
