@@ -19,12 +19,11 @@ const SignInPage = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		login(credentials);
-		navigate(-1);
-		setCredentials({
-			email: '',
-			password: ''
-		})
+		if(!credentials.email || !credentials.password) return;
+		const res = await login(credentials);
+		if(res.success) {
+			navigate('/');
+		}
 	}
 
 	return (

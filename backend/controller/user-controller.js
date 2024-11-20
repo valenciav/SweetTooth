@@ -30,9 +30,11 @@ export const createUser = async (req, res) => {
 export const getProfile = async (req, res) => {
 	try {
 		const user = req.user;
+		res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173/")
 		res.status(200).json({ success: true, data: user});
 	} catch (error) {
 		console.log("Error in get profile:", error);
+		res.status(500).json({ success: false, message: "Failed to get user data" });
 	}
 }
 

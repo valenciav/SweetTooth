@@ -4,22 +4,16 @@ import RecipeCard from "../components/RecipeCard";
 import Carousel from "../components/Carousel";
 import { IoAddOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-import { useUserStore } from "../store/user";
 import { useBookmarkStore } from '../store/bookmark';
 
 const HomePage = () => {
 	const navigate = useNavigate();
 	const { fetchRecipes, recipes } = useRecipeStore();
-	const { fetchUserData, user } = useUserStore();
 	const { fetchBookmarks } = useBookmarkStore();
 
 	useEffect(() => {
 		fetchRecipes();
 	}, [fetchRecipes]);
-
-	useEffect(() => {
-		fetchUserData();
-	}, [fetchUserData])
 
 	useEffect(() => {
 		fetchBookmarks();
@@ -42,7 +36,7 @@ const HomePage = () => {
 					})
 				}
 			</div>
-			<button onClick={() => {navigate(user ? '/createRecipe' : '/signIn') }} className="rounded-full fixed right-8 bottom-8 p-3 bg-secondary text-background text-3xl"><IoAddOutline /></button>
+			<button onClick={() => {navigate('/createRecipe') }} className="rounded-full fixed right-8 bottom-8 p-3 bg-secondary text-background text-3xl"><IoAddOutline /></button>
 		</div>
 	);
 };

@@ -11,6 +11,7 @@ const NavBar = () => {
 	const { fetchUserData, user, logout } = useUserStore();
 	const [ profileMenuVis, setProfileMenuVis ] = useState(false)
 	const [ notificationVis, setNotificationVis ] = useState(false)
+
 	useEffect(() => {
 		fetchUserData();
 	}, [fetchUserData])
@@ -53,7 +54,7 @@ const NavBar = () => {
 							<hr></hr>
 							<li><a href='/bookmark' className='flex items-center gap-2'><IoBookmark />Bookmarks</a></li>
 							<hr></hr>
-							<li><a href='' onClick={logout} className='flex items-center gap-2'><IoLogOut />Sign Out</a></li>
+							<li><a href='' onClick={()=>{logout()}} className='flex items-center gap-2'><IoLogOut />Sign Out</a></li>
 						</ul>
 					</div>
 				</div>

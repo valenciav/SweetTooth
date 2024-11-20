@@ -31,9 +31,9 @@ const RecipeCard = ({recipe}) => {
 		<div className='min-w-60 h-60 group rounded-lg overflow-clip invertPalette flex flex-col justify-center items-center cursor-pointer' onClick={(e)=> {if(e.target.tagName == 'DIV') navigate(`/recipe/${recipe._id}`)}}>
 			<img className = "h-2/3" src={recipe.thumbnail || '/SweetToothIcon.png'} alt={`Picture of ${recipe.name}`}/>
 			<div className='invertPalette group-hover:bg-gradient-to-b from-transparent px-4 py-2 w-full'>
-				<div className='flex justify-between items-center z-0'>
+				<div className='flex justify-between items-center'>
 					<h3>{recipe.title}</h3>
-					<button type='button' onClick={addBookmark} className='text-2xl z-10 hover:text-secondary'>{bookmarks.find((bookmark) => bookmark.recipe._id == recipe._id) ? <IoBookmark /> : <IoBookmarkOutline />}</button>
+					<button type='button' onClick={addBookmark} className='text-2xl hover:text-secondary'>{bookmarks.find((bookmark) => bookmark.recipe._id == recipe._id) ? <IoBookmark /> : <IoBookmarkOutline />}</button>
 				</div>
 				by <span className='hover:text-secondary'>{recipe.author.username}</span>
 				<div className='flex items-center gap-2'>
