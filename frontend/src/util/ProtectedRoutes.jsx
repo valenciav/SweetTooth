@@ -4,10 +4,10 @@ import { AuthContext } from './AuthContext';
 const ProtectedRoutes = ({ children }) => {
 	let path = location.pathname;
 	const protectedPaths = ["/bookmark", "/createRecipe"];
-	const { isAuthenticated } = useContext(AuthContext);
+	const { authenticated } = useContext(AuthContext);
 
-	if(!isAuthenticated && protectedPaths.find((protectedPath) => protectedPath == path)) {
-		path = '/signIn';
+	if(!authenticated && protectedPaths.find((protectedPath) => protectedPath == path)) {
+		location.replace('/signIn');
 	}
 	else return children;
 }

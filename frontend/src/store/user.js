@@ -7,8 +7,11 @@ export const useUserStore = create((set) => ({
 			const res = await fetch('/api/users/getProfile', {
 				credentials: 'include'
 			}).then((response) => response.json());
-			if(res.success) set({ user: res.data });
-			return { success: true };
+			if(res?.success) {
+				set({ user: res.data });
+				return { success: res.success, message: "Successfully fetched user data", data:res.data };
+			}
+			return { success: false, message: res.message};
 		} catch (error) {
 			console.log(error);
 			return { success: false, message: "Failed to fetch user data"};

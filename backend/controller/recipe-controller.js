@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import Recipe from "../models/Recipes.js";
+import Bookmark from "../models/Bookmarks.js";
+import Review from "../models/Reviews.js";
 
 export const createRecipe = async (req, res) => {
 	const recipe = req.body;
@@ -33,7 +35,9 @@ export const getRecipeById = async (req, res) => {
 	const { id } = req.params;
 	try {
 		const recipe = await Recipe.findById(id).populate('author', 'username');
-		res.status(200).json({ success: true, data: recipe });
+		const bookmarks = await Bookmark.find({recipe: id});
+		const reviews = await Review.find({recipe:id});
+		res.status(200).json({ success: true, data: {...recipe._doc, bookmarkCount: bookmarks.length, reviews} });
 	} catch (error) {
 		console.log("Error in get recipe information:", error.message);
 		res.status(500).json({ success: false, message: "Server Error" });
@@ -56,7 +60,7 @@ export const editRecipe = async (req, res) => {
 }
 
 export const deleteRecipe = async (req, res) => {
-	const {id} = req.params;
+	const { id } = req.params;
 	if (!mongoose.Types.ObjectId.isValid(id)) {
 		res.status(404).json({ success: false, message: "Recipe not found" });
 	}

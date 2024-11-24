@@ -52,7 +52,7 @@ const NavBar = () => {
 						<ul className={`${profileMenuVis ? 'visible' : 'hidden'} dropdown top-16 -translate-x-3/4`}>
 							<li><a href='/' className='flex items-center gap-2'><FaUserLarge />Profile</a></li>
 							<hr></hr>
-							<li><a href='/bookmark' className='flex items-center gap-2'><IoBookmark />Bookmarks</a></li>
+							<li className='flex items-center gap-2 cursor-pointer' onClick={() => navigate('/bookmark')}><IoBookmark />Bookmarks</li>
 							<hr></hr>
 							<li><a href='' onClick={()=>{logout()}} className='flex items-center gap-2'><IoLogOut />Sign Out</a></li>
 						</ul>

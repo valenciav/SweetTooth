@@ -4,19 +4,19 @@ import { useUserStore } from '../store/user';
 const AuthContext = createContext();
 
 const AuthProvider = ({children}) => {
-	const [isAuthenticated, setIsAuthenticated] = useState(false);
+	const [authenticated, setauthenticated] = useState(null);
 	const { fetchUserData } = useUserStore();
 
 	useEffect(() => {
 		const getUser = async () => {
 			const res = await fetchUserData();
-			if(res.success) setIsAuthenticated(true);
+			if(res.success) setauthenticated(res.data);
 		}
 		getUser();
   }, [fetchUserData]);
 	
 	return (
-		<AuthContext.Provider value={{ isAuthenticated }}>
+		<AuthContext.Provider value={{ authenticated }}>
 			{children}
 		</AuthContext.Provider>
 	)

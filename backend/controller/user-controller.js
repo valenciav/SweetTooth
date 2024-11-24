@@ -31,7 +31,7 @@ export const getProfile = async (req, res) => {
 	try {
 		const user = req.user;
 		res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173/")
-		res.status(200).json({ success: true, data: user});
+		res.status(200).json({ success: true, message:"Successfully fetched user profile", data: user});
 	} catch (error) {
 		console.log("Error in get profile:", error);
 		res.status(500).json({ success: false, message: "Failed to get user data" });
@@ -46,7 +46,7 @@ export const editUser = async (req, res) => {
 	const userUpdate = req.body;
 	try {
 		const user = await User.findByIdAndUpdate(id, userUpdate, true);
-		res.status(200).json({ success: true, data: user });
+		res.status(200).json({ success: true, message:"Successfully updated profile", data: user });
 	} catch (error) {
 		console.log("Error in update user: ", error.message);
 		res.status(500).json({ success: false, message: "Server Error" });

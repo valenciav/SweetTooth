@@ -14,7 +14,7 @@ export  const userVerification = (req, res, next) => {
 			return next({status: 401, message:"Unauthorized"});
 		}
 		else {
-			const user = await User.findById(data.id).select('-email -password -_id');
+			const user = await User.findById(data.id).select('-email -password');
 			if(user) {
 				req.user = user;
 				next();

@@ -23,7 +23,7 @@ export const useBookmarkStore = create((set) => ({
 	fetchBookmarks: async () => {
 		try {
 			const res = await fetch(`/api/bookmarks/`, {credentials: 'include'}).then((response) => response.json()).then((response) => response.data);
-			set({ bookmarks: res });
+			if(res?.success) set({ bookmarks: res });
 			return { success: true, message: "Successfully fetched bookmarks" };
 		} catch (error) {
 			console.log(error);
@@ -40,7 +40,7 @@ export const useBookmarkStore = create((set) => ({
 				},
 				body: JSON.stringify({recipeId})
 			}).then((response) => response.json());
-			set((state) => ({bookmarks: state.bookmarks.filter((bookmark) => bookmark.recipe._id !== recipeId)}));
+			if(res?.success) set((state) => ({bookmarks: state.bookmarks.filter((bookmark) => bookmark.recipe._id !== recipeId)}));
 			return { success: true, message: "Bookmark removed successfully"};
 		} catch (error) {
 			console.log(error);
