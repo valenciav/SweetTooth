@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
-import { useUserStore } from '../store/user';
+import { Link, useNavigate } from 'react-router-dom';
 
 const RegisterPage = () => {
 	const navigate = useNavigate();
-	const { login } = useUserStore();
 
 	const [credentials, setCredentials] = useState({
 		username: '',
@@ -30,7 +28,7 @@ const RegisterPage = () => {
 		email: {
 			min:0,
 			max: 255,
-			regex: /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/,
+			regex: /^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/,
 			regexMsg: 'Email is invalid'
 		},
 		password: {
@@ -42,28 +40,30 @@ const RegisterPage = () => {
 	}
 
 	const validate = (name, value) => {
+		const setError = (msg) => setErrors({...errors, [name]: msg});
 		if(value === '') {
-			setErrors({...errors, [name]: ''});
+			setError('');
 			return false;
 		}
 		if(name === 'confirmPassword') {
-			if(value !== credentials.password) setErrors({...errors, [name]: 'Passwords do not match'})
-			else setErrors({...errors, [name]: ''})
+			if(value !== credentials.password) setError('');
+			else setErrors('');
 			return false;
 		}
-		if(value.length < constraints[name].min) {
-			setErrors({...errors, [name]: `${name.charAt(0).toUpperCase()+name.substring(1)} is too short`});
+		const { min, max, regex, regexMsg } = constraints[name];
+		if(value.length < min) {
+			setError(`${name.charAt(0).toUpperCase()+name.substring(1)} should be at least ${min} characters long`);
 			return false;
 		}
-		if(value.length > constraints[name].max) {
-			setErrors({...errors, [name]: `${name.charAt(0).toUpperCase()+name.substring(1)} is too long`});
+		if(value.length > max) {
+			setError(`${name.charAt(0).toUpperCase()+name.substring(1)} should be at most ${max} characters long`);
 			return false;
 		}
-		if(!(constraints[name].regex).test(value)) {
-			setErrors({...errors, [name]: constraints[name].regexMsg});
+		if(!regex.test(value)) {
+			setError(regexMsg);
 			return false;
 		}
-		setErrors({...errors, [name]: ''});
+		setError('');
 		return true;
 	}
 
@@ -98,38 +98,22 @@ const RegisterPage = () => {
 		e.preventDefault();
 		if(!credentials.username || !credentials.email || !credentials.password || !credentials.confirmPassword ||
 			errors.username || errors.email || errors.password || errors.confirmPassword) return;
-		const userRes = await fetch('/api/users', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(credentials)
-		})
-		const newUser = await userRes.json();
-		if(!newUser.success) {
-			console.log('An error has occured')
-			return;
-		}
-		console.log("Successfully created account");
-		const signInRes = await fetch('http://localhost:5000/signIn', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: {
-				email: credentials.email,
-				password: credentials.password
+		try {
+			const res = await fetch('/api/users', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(credentials)
+			}).then((response) => response.json());
+			if(!res.success) {
+				console.log('An error has occured')
+				return;
 			}
-		})
-		const result = await signInRes.json();
-		if(!result.success) {
-			console.log('Failed to log in');
 			navigate('/signIn');
-			return;
+		} catch (error) {
+			console.log(error);
 		}
-		login(credentials);
-		console.log("Successfully logged in")
-		navigate(-1);
 	}
 
 	return (
@@ -137,7 +121,7 @@ const RegisterPage = () => {
 			<form className='form' id='registrationForm'>
 				<div className='text-center'>
 					<h3>Welcome to SweetTooth!</h3>
-					<span className='text-xs'>Already have an account? Sign In <a href="/signIn" className='text-secondary'>here!</a></span>
+					<span className='text-xs'>Already have an account? Sign In <Link to="/signIn" className='text-secondary'>here!</Link></span>
 				</div>
 				<div className='flex flex-col gap-8'>
 					<div className='form-control'>

@@ -18,14 +18,13 @@ function App() {
       <div className="min-h-screen">      
         { location.pathname != "/signIn" && location.pathname != "/register" && <NavBar/>}
         { location.pathname != "/" && <div className='flex items-center text-3xl font-bold m-2 gap-4'><button type='button' onClick={() => (navigate(-1))}><FaChevronLeft/></button></div>}
-        <Routes>
-          <Route path="/" element={ <HomePage/> }/>
-          <Route path="/signIn" element={ <SignInPage/> }/>
-          <Route path="/register" element={ <RegisterPage/> }/>
-          <Route path="/recipe/:id" element={ <RecipePage/> }/>
-        </Routes>
+        
         <ProtectedRoutes>
           <Routes>
+            <Route path="/" element={ <HomePage/> }/>
+            <Route path="/signIn" element={ <SignInPage/> }/>
+            <Route path="/register" element={ <RegisterPage/> }/>
+            <Route path="/recipe/:id" element={ <RecipePage/> }/>
             <Route path="/bookmark" element={ <BookmarkPage /> }/>
             <Route path="/createRecipe" element={ <CreateRecipePage/> }/>
           </Routes>

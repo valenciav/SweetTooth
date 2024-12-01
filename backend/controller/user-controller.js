@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import User from "../models/Users.js";
+import Follow from "../models/Follows.js";
 
 export const createUser = async (req, res) => {
 	const user = req.body;
@@ -27,18 +28,21 @@ export const createUser = async (req, res) => {
 	}
 }
 
-export const getProfile = async (req, res) => {
+export const getUserByUsername = async (req, res) => {
 	try {
-		const user = req.user;
-		res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173/")
-		res.status(200).json({ success: true, message:"Successfully fetched user profile", data: user});
+		const { username } = req.params;
+		const user = await User.findOne({username}).select('-email -password').populate('recipes', 'title thumbnail');
+		const followers = await Follow.find({followed_id: user._id}).populate('follower_id', '-_id username profilePicture').then(follows => follows.map(follow => follow.follower_id));
+		const followings = await Follow.find({follower_id: user._id}).populate('followed_id', '-_id username profilePicture').then(follows => follows.map(follow => follow.followed_id));
+		if(user) res.status(200).json({ success: true, message: "Successfully fetched user", data: {...user._doc, followers, followings}});
+		else res.status(404).json({success: false, message: "User not found"});
 	} catch (error) {
-		console.log("Error in get profile:", error);
+		console.log("Error in get user:", error);
 		res.status(500).json({ success: false, message: "Failed to get user data" });
 	}
 }
 
-export const editUser = async (req, res) => {
+export const editProfile = async (req, res) => {
 	const {id} = req.user._id;
 	if (!mongoose.Types.ObjectId.isValid(id)) {
 		res.status(404).json({ success: false, message: "User not found" });
@@ -53,7 +57,7 @@ export const editUser = async (req, res) => {
 	}
 }
 
-export const deleteUser = async (req, res) => {
+export const deleteProfile = async (req, res) => {
 	const {id} = req.user._id;
 	if (!mongoose.Types.ObjectId.isValid(id)) {
 		return res.status(404).json({ success: false, message: "User not found" });

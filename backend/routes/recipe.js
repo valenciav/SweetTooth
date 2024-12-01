@@ -10,6 +10,5 @@ router.get('/', getRecipes);
 router.get('/:id', getRecipeById);
 router.put('/:id', userVerification, editRecipe);
 router.delete('/:id', userVerification, deleteRecipe);
-// router.get('/getBookmarkCount/:id', getBookmarkCount);
 
 export default router;

@@ -1,14 +1,14 @@
 import express from "express";
-import { createUser, editUser, deleteUser, checkUsernameAvailability, checkEmailAvailability, getProfile } from "../controller/user-controller.js";
+import { createUser, checkUsernameAvailability, checkEmailAvailability, getUserByUsername, editProfile, deleteProfile } from "../controller/user-controller.js";
 import { userVerification } from "../middleware/AuthMiddleware.js";
 
 const router = express.Router();
 
 router.post('/', createUser);
-router.get('/getProfile', userVerification, getProfile);
+router.get('/:username', getUserByUsername);
 router.get('/checkUsername/:username', checkUsernameAvailability);
 router.get('/checkEmail/:email', checkEmailAvailability);
-router.put('/:id', userVerification, editUser);
-router.delete('/:id', deleteUser);
+router.put('/', userVerification, editProfile);
+router.delete('/', deleteProfile);
 
 export default router;

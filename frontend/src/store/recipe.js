@@ -83,17 +83,7 @@ export const useRecipeStore = create((set) => ({
 			method: "DELETE",
 		});
 		const data = await res.json();
-		if(!data.success) return { success: false, message: data.message }
-		
+		if(!data.success) return { success: false, message: data.message }		
 		set((state) => ({recipes: state.recipes.filter(recipe => recipe._id !== id)}));
-	},
-	// fetchRecipeBookmarkCount: async (id) => {
-	// 	try {
-	// 		const res = await fetch(`/api/recipes/getBookmarkCount/${id}`).then((response) => response.json());
-	// 		return res.success ? res.data : 0;
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 		return 0;
-	// 	}
-	// }
+	}
 }))

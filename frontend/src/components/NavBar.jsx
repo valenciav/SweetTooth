@@ -1,20 +1,16 @@
-import React, { useEffect, useState } from 'react'
-import { useNavigate } from "react-router-dom"
-import SearchBar from "./SearchBar"
-import { useUserStore } from '../store/user';
+import React, { useState } from 'react';
+import { Link, useNavigate } from "react-router-dom";
+import SearchBar from "./SearchBar";
 import { FaBell } from 'react-icons/fa';
 import { FaUserLarge } from "react-icons/fa6";
 import { IoBookmark, IoLogOut } from 'react-icons/io5';
+import useAuth from '../util/useAuth';
 
 const NavBar = () => {
 	const navigate = useNavigate();
-	const { fetchUserData, user, logout } = useUserStore();
 	const [ profileMenuVis, setProfileMenuVis ] = useState(false)
 	const [ notificationVis, setNotificationVis ] = useState(false)
-
-	useEffect(() => {
-		fetchUserData();
-	}, [fetchUserData])
+	const { authenticated, logOut } = useAuth();
 
 	const toggleProfileMenu = () => {
 		if(notificationVis) setNotificationVis(profileMenuVis);
@@ -36,25 +32,22 @@ const NavBar = () => {
 			<div className={`absolute w-full h-full top-0 left-0 ${notificationVis || profileMenuVis ? 'block' : 'hidden'}`} onClick={collapseDropdown}></div>
 			<img src="/SweetToothLogo.png" alt="Sweet Tooth Logo" className="h-full"/>
 			<SearchBar/>
-			{user ?
+			{authenticated ?
 				<div className='flex gap-3'>
 					<div className='flex flex-col justify-center items-start'>
 						<button className= 'text-background z-10' onClick={toggleNotification}><FaBell size={24}/></button>
 						<ul className= {`${notificationVis ? 'visible' : 'hidden'} dropdown w-96 top-16 -translate-x-full`}>
 							<li>Welcome to SweetTooth! Here&apos;s a cookie 🍪</li>
-							{
-
-							}
 						</ul>
 					</div>
 					<div className='flex flex-col'>
 						<button className='bg-secondary rounded-full z-10' onClick={toggleProfileMenu}><img src={'/SweetToothIcon.png'} alt='Profile Picture' className='h-10 rounded-full'/></button>
 						<ul className={`${profileMenuVis ? 'visible' : 'hidden'} dropdown top-16 -translate-x-3/4`}>
-							<li><a href='/' className='flex items-center gap-2'><FaUserLarge />Profile</a></li>
+							<li><Link to='/' className='flex items-center gap-2'><FaUserLarge />Profile</Link></li>
 							<hr></hr>
-							<li className='flex items-center gap-2 cursor-pointer' onClick={() => navigate('/bookmark')}><IoBookmark />Bookmarks</li>
+							<li><Link to='/bookmark' className='flex items-center gap-2 cursor-pointer'><IoBookmark />Bookmarks</Link></li>
 							<hr></hr>
-							<li><a href='' onClick={()=>{logout()}} className='flex items-center gap-2'><IoLogOut />Sign Out</a></li>
+							<li><Link to='' onClick={logOut} className='flex items-center gap-2'><IoLogOut />Sign Out</Link></li>
 						</ul>
 					</div>
 				</div>

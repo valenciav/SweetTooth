@@ -16,16 +16,12 @@ const userSchema = new Schema({
 		type: String,
 		required: [true, "Password required"]
 	},
-	profilePicture: Buffer,
-	bannerPicture: Buffer,
+	profilePicture: String,
+	bannerPicture: String,
 	bio: String,
-	followings: [{
+	recipes: [{
 		type: Schema.Types.ObjectId,
-		ref: 'User'
-	}],
-	followers: [{
-		type: Schema.Types.ObjectId,
-		ref: 'User'
+		ref: 'Recipe'
 	}]
 }, {
 	timestamps: true

@@ -1,4 +1,4 @@
-import express from "express";
+import express from "express"; 
 import { addBookmark, deleteBookmark, getBookmarks } from "../controller/bookmark-controller.js";
 import { userVerification } from "../middleware/AuthMiddleware.js";
 

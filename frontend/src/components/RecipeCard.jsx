@@ -1,25 +1,21 @@
 import React, { useEffect } from 'react'
 import { IoBookmark, IoBookmarkOutline } from "react-icons/io5";
 import Tag from './Tag';
-import { useUserStore } from '../store/user';
 import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { PiStarBold, PiStarHalfFill, PiStarFill } from "react-icons/pi";
 import { useBookmarkStore } from '../store/bookmark';
+import useAuth from '../util/useAuth';
 
 const RecipeCard = ({recipe}) => {
 	const navigate = useNavigate();
-	const { user, fetchUserData } = useUserStore();
 	const { bookmarks, createBookmark, deleteBookmark } = useBookmarkStore();
-
-	useEffect(() => {
-		fetchUserData();
-	}, [fetchUserData]);
+	const { authenticated } = useAuth();
 
 	const averageReview = recipe.reviews.reduce((review, sum) => review.rating + sum, 0);
 
 	const addBookmark = () => {
-		if(!user) {
+		if(!authenticated) {
 			navigate('/signIn');
 			return;
 		}
@@ -28,12 +24,12 @@ const RecipeCard = ({recipe}) => {
 	}
 
 	return (
-		<div className='min-w-60 h-60 group rounded-lg overflow-clip invertPalette flex flex-col justify-center items-center cursor-pointer' onClick={(e)=> {if(e.target.tagName == 'DIV') navigate(`/recipe/${recipe._id}`)}}>
+		<Link className='min-w-60 h-60 group rounded-lg overflow-clip invertPalette flex flex-col justify-center items-center cursor-pointer' to={`recipe/${recipe._id}`}>
 			<img className = "h-2/3" src={recipe.thumbnail || '/SweetToothIcon.png'} alt={`Picture of ${recipe.name}`}/>
 			<div className='invertPalette group-hover:bg-gradient-to-b from-transparent px-4 py-2 w-full'>
 				<div className='flex justify-between items-center'>
 					<h3>{recipe.title}</h3>
-					<button type='button' onClick={addBookmark} className='text-2xl hover:text-secondary'>{bookmarks.find((bookmark) => bookmark.recipe._id == recipe._id) ? <IoBookmark /> : <IoBookmarkOutline />}</button>
+					<button type='button' onClick={(e)=>{e.preventDefault(); addBookmark();}} className='text-2xl hover:text-secondary z-10'>{bookmarks.find((bookmark) => bookmark.recipe._id == recipe._id) ? <IoBookmark /> : <IoBookmarkOutline />}</button>
 				</div>
 				by <span className='hover:text-secondary'>{recipe.author.username}</span>
 				<div className='flex items-center gap-2'>
@@ -60,7 +56,7 @@ const RecipeCard = ({recipe}) => {
 					})}
 				</div>
 			</div>
-		</div>
+		</Link>
 	)
 }
 

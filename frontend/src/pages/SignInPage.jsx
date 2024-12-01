@@ -1,11 +1,11 @@
 import React from 'react'
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useUserStore } from '../store/user';
+import { Link, useNavigate } from 'react-router-dom';
+import useAuth from '../util/useAuth';
 
 const SignInPage = () => {	
 	const navigate = useNavigate();
-	const { login } = useUserStore();
+	const { logIn } = useAuth();
 
 	const [credentials, setCredentials] = useState({
 		email: '',
@@ -20,8 +20,9 @@ const SignInPage = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		if(!credentials.email || !credentials.password) return;
-		const res = await login(credentials);
+		const res = await logIn(credentials);
 		if(res.success) {
+			logIn();
 			navigate('/');
 		}
 	}
@@ -31,7 +32,7 @@ const SignInPage = () => {
 			<form className='form'>
 				<div className='text-center'>
 					<h3>Glad to see you at SweetTooth!</h3>
-					<span className='text-xs'>Don&apos;t have an account yet? Create one <a href="/register" className='text-secondary'>here!</a></span>
+					<span className='text-xs'>Don&apos;t have an account yet? Create one <Link to="/register" className='text-secondary'>here!</Link></span>
 				</div>
 				<div className='flex flex-col gap-8'>
 					<div className='form-control'>

@@ -17,9 +17,10 @@ export const signIn = async (req, res) => {
 		const token = createSecretToken(user._id);
 		res.cookie("token", token, {
 			withCredentials: true,
-			httpOnly: true
+			httpOnly: true,
+			maxAge : 2 * 60 * 60 * 1000
 		})
-		res.status(200).json({success: true, message: "Successfully logged in"});
+		res.status(200).json({success: true, message: "Successfully logged in", data: user.username});
 	} catch (error) {
 		console.log("Error in authentication:", error);
 		res.status(500).json({ success: false, message: "Failed to issue session" });
@@ -27,6 +28,20 @@ export const signIn = async (req, res) => {
 }
 
 export const signOut = async (req, res) => {
-	
-  res.status(200).json({ message: 'Successfully signed out' });
+	try {
+		res.clearCookie("token");
+		res.status(200).json({ success: true, message: 'Successfully signed out' });
+	} catch (error) {
+		res.status(500).json({ success: false, message: 'Failed to sign out'});
+	}
 };
+
+export const getAuthenticatedUser = async (req, res) => {
+	try {
+		const user = req.user;
+		if(user) res.status(200).json({ success: true, message: "Successfully fetched authenticated user", data: user});
+	} catch (error) {
+		console.log(error)
+		res.status(401).json({ success: false, message: "Not signed in"});
+	}
+}

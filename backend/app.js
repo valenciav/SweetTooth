@@ -7,6 +7,7 @@ import recipeRoutes from "./routes/recipe.js";
 import reviewRoutes from "./routes/review.js";
 import bookmarkRoutes from "./routes/bookmark.js";
 import authenticationRoutes from "./routes/authentication.js";
+import followRoutes from "./routes/follow.js";
 import ErrorHandler from "./middleware/ErrorHandler.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -46,6 +47,7 @@ app.use("/api/notifications", notificationRoutes);
 app.use("/api/recipes", recipeRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/bookmarks", bookmarkRoutes);
+app.use("/api/follows", followRoutes);
 app.use("/", authenticationRoutes);
 
 // app.get('/', (req, res, next) => {

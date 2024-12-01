@@ -1,8 +1,7 @@
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useRecipeStore } from '../store/recipe.js';
 import { useContext, useEffect, useState } from 'react';
 import { GoKebabHorizontal } from "react-icons/go";
-import { useUserStore } from '../store/user.js';
 import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
 import { MdOutlineDelete, MdOutlineModeEdit } from "react-icons/md";
 import { useBookmarkStore } from '../store/bookmark.js';
@@ -15,7 +14,6 @@ const RecipePage = () => {
 	const {id} = useParams();
 	const {currentRecipe, fetchRecipeById} = useRecipeStore();
 	const { authenticated } = useContext(AuthContext);
-	// const {user, fetchUserData} = useUserStore();
 	const {bookmarks, createBookmark, fetchBookmarks, deleteBookmark} = useBookmarkStore();
 	const [menuVisibility, setMenuVisibility] = useState(false);
 	const [bookmarkCount, setBookmarkCount] = useState(currentRecipe.bookmarkCount);
@@ -26,10 +24,6 @@ const RecipePage = () => {
 	useEffect(() => {
 		fetchRecipeById(id);
 	}, [fetchRecipeById, id]);
-
-	// useEffect(() => {
-	// 	fetchUserData();
-	// }, [fetchUserData]);
 
 	useEffect(() => {
 		fetchBookmarks();
@@ -64,7 +58,7 @@ const RecipePage = () => {
 							<div className='flex justify-between items-center'>
 								<div className='flex flex-col'>
 									<h2>{currentRecipe.title}</h2>
-									<p>By <a href={`/user/${currentRecipe.author.username}`} className='text-secondary'>{currentRecipe.author.username}</a></p>
+									<p>By <Link href={`/user/${currentRecipe.author.username}`} className='text-secondary'>{currentRecipe.author.username}</Link></p>
 									<button className='flex items-center text-xl' onClick={addBookmark}>
 										<span className='text-secondary'>{bookmarks.length > 0 && bookmarks.find((bookmark) => bookmark.recipe._id == currentRecipe._id) ? <IoBookmark /> : <IoBookmarkOutline />}</span>
 										{bookmarkCount}
