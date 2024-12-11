@@ -96,8 +96,9 @@ const CreateRecipePage = () => {
 		setRecipe({...recipe, 'prepMinute': (hour*60+parseInt(minute))});
 		const formData = new FormData();
 		for(let prop in recipe) {
-			formData.append(prop, recipe[prop]);
+			formData.append(prop, JSON.stringify(recipe[prop]));
 		}
+		formData.set('thumbnail', recipe.thumbnail);
 		const res = await createRecipe(formData);
 		if(!res.success) {
 			console.log(res.message);

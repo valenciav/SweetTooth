@@ -10,7 +10,7 @@ const recipeSchema = new mongoose.Schema({
 		ref: 'User',
 		required: true
 	},
-	thumbnail: Buffer,
+	thumbnail: String,
 	prepMinute: {
 		type: Number,
 		required: true

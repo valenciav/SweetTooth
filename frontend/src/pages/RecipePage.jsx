@@ -18,7 +18,7 @@ const RecipePage = () => {
 	const [menuVisibility, setMenuVisibility] = useState(false);
 	const [bookmarkCount, setBookmarkCount] = useState(currentRecipe.bookmarkCount);
 	const [rating, setRating] = useState(0);
-	const ratingStatus = ['Not for me :/', 'Meh', 'Okay', 'Good', 'Awesome!'];
+	const ratingStatus = ['Meh :/', 'Not for me', 'Okay', 'Good', 'Awesome!'];
 	const averageReview = currentRecipe.reviews.reduce((review, sum) => review.rating + sum, 0);
 	
 	useEffect(() => {

@@ -36,6 +36,7 @@ export const useRecipeStore = create((set) => ({
 				body: recipe
 			});
 			const data = await res.json();
+			
 			if(!data.success) return ({ success: false, message: data.message});
 			set((state) => ({recipes: [...state.recipes, data.data]}));
 			return { success: true, message: "Recipe created successfully" };

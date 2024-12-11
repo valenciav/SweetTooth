@@ -1,5 +1,5 @@
 import User from "../models/Users.js";
-import { createSecretToken } from "../util/token.js";
+import { createSecretToken } from "../util/lib.js";
 
 export const signIn = async (req, res) => {
 	const { email, password } = req.body;

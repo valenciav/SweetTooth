@@ -11,23 +11,8 @@ import followRoutes from "./routes/follow.js";
 import ErrorHandler from "./middleware/ErrorHandler.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import { S3Client } from "@aws-sdk/client-s3";
 
 dotenv.config();
-
-const bucketName = process.env.BUCKET_NAME;
-const bucketRegion = process.env.BUCKET_REGION;
-const accessKey = process.env.ACCESS_KEY;
-const secretAccessKey = process.env.SECRET_ACCESS_KEY;
-
-const s3 = new S3Client({
-	credentials: {
-		accessKeyId: accessKey,
-		secretAccessKey: secretAccessKey
-	},
-	region: bucketRegion
-})
-
 const app = express();
 const PORT = process.env.PORT || 5000;
 
